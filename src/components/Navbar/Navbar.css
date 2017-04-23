@@ -1,0 +1,21 @@
+.navbar {
+    height: 80px;
+    padding: 15px;
+    background: #e74c3c;
+    border-color: #e74c3c;
+    color: #fff;
+    position: fixed
+}
+
+.navbar .navbar-nav li a{
+    color: #fff;
+}
+
+.navbar .navbar-nav li a:hover{
+    background: #c0392b;
+    color: #fff;
+}
+
+.navbar .navbar-brand {
+    color: #fff;
+}

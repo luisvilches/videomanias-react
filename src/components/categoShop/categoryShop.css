@@ -1,0 +1,22 @@
+.CategoryShop {
+    height: 100%;
+    padding: 100px 20px;;
+}
+
+.CategoryShop img {
+    height: auto;
+    width: 120px;
+}
+
+.CategoryShop .pd10{
+    padding-left: 20px !important;
+}
+
+
+.CategoryShop .paddingTabs {
+    padding: 50px 20px !important;
+}
+
+.CategoryShop .ht {
+    max-height: 169px !important;
+}
