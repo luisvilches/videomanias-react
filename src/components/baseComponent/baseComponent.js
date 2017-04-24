@@ -4,7 +4,7 @@ import Navbar from '.././Navbar/Navbar';
 class BaseComponent extends Component {
     render(){
         return(
-            <main className='container'>
+            <main className='container-fluid'>
                 <Navbar/>
                 {this.props.children}
             </main>

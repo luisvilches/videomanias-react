@@ -20,3 +20,19 @@
 .CategoryShop .ht {
     max-height: 169px !important;
 }
+
+.CategoryShop .banners {
+    width: 100%;
+    min-width: 100%;
+    margin: 0 auto;
+    display: block;
+}
+
+.CategoryShop .minH{
+    margin-top: 60px;
+    min-height: 300px;
+}
+
+.CategoryShop .mb{
+    margin-bottom: 20px !important;
+}

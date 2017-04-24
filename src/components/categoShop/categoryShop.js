@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import './categoryShop.css';
-import {Tabs,Tab,Button} from 'react-bootstrap'
+import {Tabs,Tab,Button,Grid,Row,Col} from 'react-bootstrap';
 
 class Item extends Component {
     render(){
         return(
-            <div className="cell-33">
-                <div className="cell-35">
+            <Col xs={12} md={4}>
+                <Col xs={12} md={6}>
                     <img src={this.props.image} className="cover" />
-                </div>
-                <div className="cell-65 pd10">
+                </Col>
+                <Col xs={12} md={6}>
                     <h4>{this.props.name}</h4>
                     <br/>
                     <h4>$ {this.props.price}.-</h4>
-                    <Button>Agregar</Button>                 
-                </div>
-            </div>
+                    <Button>Agregar</Button>
+                </Col>
+            </Col>
         )
     }
 }
@@ -27,17 +27,87 @@ class CategoryShop extends Component {
         super();
 
         this.state = {
+           all:[],
            datos: [],
-           premiere:[]
+           subcategory:[],
+           premiere:[],
+           offer:[],
+           banner:''
         }
     }
 
-    _filter(array){
-        return array.premiere.search(true === -1);
+    banner(){
+        fetch(`http://localhost:4000/category/${this.props.params.category}/banner`)
+        .then(res => {
+            return res.json()
+        })
+        .then(response => {
+            if(response.status === 'error'){
+                alert(response.message);
+            } 
+            else {
+                this.setState({
+                    banner: response.data.img
+                })
+
+                 console.log(response.data.img)
+            }
+        })
     }
 
-    componentWillReceiveProps(){
-       fetch(`http://localhost:4000/category/${this.props.params.category}`)
+    premiere(){
+        fetch(`http://localhost:4000/category/${this.props.params.category}/premiere`)
+        .then(res => {
+            return res.json()
+        })
+        .then(response => {
+            if(response.status === 'error'){
+                alert(response.message);
+            } 
+            else {
+                this.setState({
+                    premiere: response.data
+                })
+            }
+        })
+    }
+
+    offer(){
+        fetch(`http://localhost:4000/category/${this.props.params.category}/offer`)
+        .then(res => {
+            return res.json()
+        })
+        .then(response => {
+            if(response.status === 'error'){
+                alert(response.message);
+            } 
+            else {
+                this.setState({
+                    offer: response.data
+                })
+            }
+        })
+    }
+
+    all(){
+        fetch(`http://localhost:4000/category/${this.props.params.category}`)
+        .then(res => {
+            return res.json()
+        })
+        .then(response => {
+            if(response.status === 'error'){
+                alert(response.message);
+            } 
+            else {
+                this.setState({
+                    all: response.data
+                })
+            }
+        })
+    }
+
+    _Handler(e){
+        fetch(`http://localhost:4000/category/${this.props.params.category}/${e}`)
         .then(res => {
             return res.json()
         })
@@ -52,9 +122,17 @@ class CategoryShop extends Component {
             }
         })
     }
+    
+
+    componentWillReceiveProps(){
+        this.banner();
+        this.all();
+        this.premiere();
+        this.offer();
+    }
 
     componentDidMount(){
-     fetch(`http://localhost:4000/category/${this.props.params.category}`)
+     fetch(`http://localhost:4000/family`)
         .then(res => {
             return res.json()
         })
@@ -64,32 +142,70 @@ class CategoryShop extends Component {
             } 
             else {
                 this.setState({
-                    datos: response.data
+                    subcategory: response.data
                 })
+                this.banner();
+                this.all();
+                this.premiere();
+                this.offer();
+                console.log(this.state.banner)
             }
         })
     }
     render() {
         return (
             <div className="CategoryShop">
-                <div className="container-lg">
+                <div className="container-full">
+                    <div className="rown minH">
+                         <img src={this.state.banner} alt="" className="banners"/>
+                    </div>
+                    <br/>
+                    <br/>
                     <div className="rown">
                         <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
-                            <Tab eventKey={1} title="Juegos" className="paddingTabs">
-                                {this.state.datos.map((item,index) => {
+                            <Tab eventKey={1} title="Todos" className="paddingTabs">
+                                {this.state.all.map((item,index) => {
                                     return (
                                         <Item key={index} image={item.image} name={item.name} price={item.price}/>
                                     )
                                     }
                                 )}
                             </Tab>
-                            <Tab eventKey={2} title="Accesorios" className="paddingTabs">Tab 2 content</Tab>
-                            <Tab eventKey={3} title="Estrenos" className="paddingTabs">
-                               
+                            <Tab eventKey={2} title="Estrenos" className="paddingTabs">
+                               {this.state.premiere.map((item,index) => {
+                                    return (
+                                        <Item key={index} image={item.image} name={item.name} price={item.price}/>
+                                    )
+                                    }
+                                )}
                             </Tab>
-                            <Tab eventKey={4} title="Ofertas" className="paddingTabs">Tab 4 content</Tab>
-                            <Tab eventKey={5} title="Juegos en Linea" className="paddingTabs">Tab 5 content</Tab>
+                            <Tab eventKey={3} title="Ofertas" className="paddingTabs">
+                                {this.state.offer.map((item,index) => {
+                                    return (
+                                        <Item key={index} image={item.image} name={item.name} price={item.price}/>
+                                    )
+                                    }
+                                )}
+                            </Tab>
+                            {this.state.subcategory.map((item,index) => {
+                                 
+                                return(
+                                    <Tab key={index} eventKey={4+index} title={item.name} className="paddingTabs" onEntering={this._Handler.bind(this,item.name)}>
+                                        {this.state.datos.map((item,index) => {
+                                            return (
+                                                <Item key={index} image={item.image} name={item.name} price={item.price}/>
+                                            )
+                                            }
+                                        )}
+                                    </Tab>
+                                )
+                            })}
                         </Tabs>
+
+                        <br/>
+                        <br/>
+
+            
                     </div>
                 </div>
             </div>
