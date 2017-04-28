@@ -1,6 +1,6 @@
 .CategoryShop {
     height: 100%;
-    padding: 100px 20px;;
+    padding: 100px 20px;
 }
 
 .CategoryShop img {
@@ -15,6 +15,7 @@
 
 .CategoryShop .paddingTabs {
     padding: 50px 20px !important;
+    min-height: 400px !important;
 }
 
 .CategoryShop .ht {
@@ -26,13 +27,45 @@
     min-width: 100%;
     margin: 0 auto;
     display: block;
+    max-height: 374px;
 }
 
 .CategoryShop .minH{
-    margin-top: 60px;
+    margin-top: 0px;
     min-height: 300px;
 }
 
 .CategoryShop .mb{
-    margin-bottom: 20px !important;
+    margin-bottom: 100px !important;
+}
+
+.nav-tabs>li {
+    width: 10%;
+    text-align: center;
+    display: inline-block;
+    float: none;
+}
+
+.nav-tabs{
+    text-align: center;
+    background: #f1c40f;
+}
+
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+    border: none;
+    border-bottom: 2px solid #ff4521;
+}
+
+.CategoryShop .noMargin{
+    margin: 0px !important;
+}
+
+@media (max-width: 768px){
+    .nav-tabs>li {
+        width: 100%;
+    }
+    .CategoryShop .minH{
+        margin-top: 0px;
+        min-height: 150px;
+    }
 }

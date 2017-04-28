@@ -1,8 +1,10 @@
 import React,{Component} from 'react';
-import {Grid,Row,Col} from 'react-bootstrap';
+import {Grid,Row,Col,Carousel,} from 'react-bootstrap';
 import {Link} from 'react-router';
 import './banner.css';
 
+let dev = 'http://localhost:4000';
+let prod = 'https://dowhile-videomania.herokuapp.com';
 
 class Banner extends Component{
 
@@ -10,12 +12,15 @@ class Banner extends Component{
         super(props)
 
         this.state = {
-            banner: []
+            index: 5,
+            direction: null,
+            banner: [],
+            api: dev
         }
     }
 
     componentWillMount(){
-     fetch(`http://localhost:4000/banner`)
+     fetch(`${this.state.api}/banner`)
         .then(res => {
             return res.json()
         })
@@ -34,20 +39,19 @@ class Banner extends Component{
 
     render(){
         return(
-            <Grid>
+            <Grid className="Banns">
                 <Row>
-                    <h2>HOLA MUNDO!!</h2>
-                    {this.state.banner.map((item,index) => {
-                        return(
-                            <Col xs={12} md={12} key={index}>
-                                <Link to={'/'+ item.category}>
-                                    <br/>
-                                    <img src={item.img} className="banners" />
-                                    <br/>
-                                </Link>
-                            </Col>
-                        )
-                    })}
+                    <Carousel>
+                        {this.state.banner.map((item,index) => {
+                            return(
+                                <Carousel.Item key={index}>
+                                    <Link to={'/'+ item.category}>
+                                        <img width={900} height={500} alt="900x500" className="carouselImg" src={item.img}/>
+                                    </Link>
+                                </Carousel.Item>
+                            )
+                        })}
+                    </Carousel>
                 </Row>
             </Grid>
         )

@@ -1,16 +1,25 @@
 import React, { Component } from 'react';
 import './categoryShop.css';
 import {Tabs,Tab,Button,Grid,Row,Col} from 'react-bootstrap';
+import {Link} from 'react-router';
+
+
+let dev = 'http://localhost:4000';
+let prod = 'https://dowhile-videomania.herokuapp.com';
 
 class Item extends Component {
     render(){
         return(
             <Col xs={12} md={4}>
                 <Col xs={12} md={6}>
-                    <img src={this.props.image} className="cover" />
+                    <Link to={location.hash.substr(2) + '/' + this.props.url}>
+                        <img src={this.props.image} className="cover" />
+                    </Link>
                 </Col>
                 <Col xs={12} md={6}>
-                    <h4>{this.props.name}</h4>
+                    <Link to={location.hash.substr(2) + '/' + this.props.url}>
+                        <h4>{this.props.name}</h4>
+                    </Link>
                     <br/>
                     <h4>$ {this.props.price}.-</h4>
                     <Button>Agregar</Button>
@@ -27,17 +36,19 @@ class CategoryShop extends Component {
         super();
 
         this.state = {
+           api: dev,
            all:[],
            datos: [],
            subcategory:[],
            premiere:[],
            offer:[],
-           banner:''
+           banner:'',
+           filter:[]
         }
     }
 
     banner(){
-        fetch(`http://localhost:4000/category/${this.props.params.category}/banner`)
+        fetch(`${this.state.api}/category/${this.props.params.category}/banner`)
         .then(res => {
             return res.json()
         })
@@ -49,14 +60,12 @@ class CategoryShop extends Component {
                 this.setState({
                     banner: response.data.img
                 })
-
-                 console.log(response.data.img)
             }
         })
     }
 
     premiere(){
-        fetch(`http://localhost:4000/category/${this.props.params.category}/premiere`)
+        fetch(`${this.state.api}/category/${this.props.params.category}/premiere`)
         .then(res => {
             return res.json()
         })
@@ -73,7 +82,7 @@ class CategoryShop extends Component {
     }
 
     offer(){
-        fetch(`http://localhost:4000/category/${this.props.params.category}/offer`)
+        fetch(`${this.state.api}/category/${this.props.params.category}/offer`)
         .then(res => {
             return res.json()
         })
@@ -90,7 +99,7 @@ class CategoryShop extends Component {
     }
 
     all(){
-        fetch(`http://localhost:4000/category/${this.props.params.category}`)
+        fetch(`${this.state.api}/category/${this.props.params.category}`)
         .then(res => {
             return res.json()
         })
@@ -107,7 +116,7 @@ class CategoryShop extends Component {
     }
 
     _Handler(e){
-        fetch(`http://localhost:4000/category/${this.props.params.category}/${e}`)
+        fetch(`${this.state.api}/category/${this.props.params.category}/${e}`)
         .then(res => {
             return res.json()
         })
@@ -132,7 +141,7 @@ class CategoryShop extends Component {
     }
 
     componentDidMount(){
-     fetch(`http://localhost:4000/family`)
+     fetch(`${this.state.api}/family`)
         .then(res => {
             return res.json()
         })
@@ -142,13 +151,15 @@ class CategoryShop extends Component {
             } 
             else {
                 this.setState({
-                    subcategory: response.data
+                    subcategory: response.data,
                 })
+
+                const array = this.state.datos.filter((item) => item.premiere)
                 this.banner();
                 this.all();
                 this.premiere();
                 this.offer();
-                console.log(this.state.banner)
+                console.log(array)
             }
         })
     }
@@ -166,7 +177,7 @@ class CategoryShop extends Component {
                             <Tab eventKey={1} title="Todos" className="paddingTabs">
                                 {this.state.all.map((item,index) => {
                                     return (
-                                        <Item key={index} image={item.image} name={item.name} price={item.price}/>
+                                        <Item key={index} image={item.image} name={item.name} price={item.price} url={item.nameUrl}/>
                                     )
                                     }
                                 )}

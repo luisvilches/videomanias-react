@@ -1,8 +1,31 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
-import {Grid,Row,Col,Button} from 'react-bootstrap';
+import {Grid,Row,Col,Button,ResponsiveEmbed,embed} from 'react-bootstrap';
 import './product.css';
+import {Carousel as Carousel} from 'react-responsive-carousel';
+import { DefaultPlayer as Video } from 'react-html5video';
+import 'react-html5video/dist/styles.css';
+import ImageGallery from 'react-image-gallery';
+import "react-image-gallery/styles/css/image-gallery.css";
 
+const images = [
+      {
+        original: 'http://lorempixel.com/1000/600/nature/1/',
+        thumbnail: 'http://lorempixel.com/250/150/nature/1/',
+      },
+      {
+        original: 'http://lorempixel.com/1000/600/nature/2/',
+        thumbnail: 'http://lorempixel.com/250/150/nature/2/'
+      },
+      {
+        original: 'http://lorempixel.com/1000/600/nature/3/',
+        thumbnail: 'http://lorempixel.com/250/150/nature/3/'
+      }
+    ]
+
+
+let dev = 'http://localhost:4000';
+let prod = 'https://dowhile-videomania.herokuapp.com';
 
 class Product extends Component {
 
@@ -10,11 +33,12 @@ class Product extends Component {
         super(props);
 
         this.state = {
-            data: []
+            data: [],
+            api:dev
         }
     }
      componentWillMount(){
-       fetch(`http://localhost:4000/products/${this.props.params.category}/${this.props.params.product}`)
+       fetch(`${this.state.api}/products/${this.props.params.category}/${this.props.params.product}`)
         .then(res => {
             return res.json()
         })
@@ -33,22 +57,30 @@ class Product extends Component {
     render(){
         return(
             <div>
-                    <br/>
-                <br/>
-                <br/>
-                <br/>
-                <br/>
-                <Grid>
+                <Grid className="Product">
                     <Row>
-                        <Col xs={12} md={9}>
-                            <h2>{this.state.data.name}</h2>
-                        </Col>
-                        <Col xs={12} md={3}>
-                            <img src={this.state.data.image} alt=""/>
+                        <Col xs={12} md={6}>
                             <br/>
-                            <h4 className="text-center">${this.state.data.price} + IVA</h4>
+                            <ImageGallery
+                            items={images}
+                            slideInterval={2000}
+                            onImageLoad={this.handleImageLoad}/>
+                        </Col>
+                        <Col xs={12} md={6}>
+                            <h2>{this.state.data.name}</h2>
+                            <br/>
+                            <img src={this.state.data.image}  alt=""/>
+                            <br/>
+                            <h4>${this.state.data.price} + IVA</h4>
                             <br/>
                             <Button>Comprar ahora</Button>
+                        </Col>
+                         <Col xs={12} md={12}>
+                            <br/>
+                            <h5>Descripción:</h5>
+                            <br/>
+                            <p>${this.state.data.description} + IVA</p>
+                            <br/>
                         </Col>
                     </Row>
                 </Grid>

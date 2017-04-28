@@ -1,7 +1,13 @@
-.banners {
+.Banns{
+    padding-top: 120px !important;
+}
+.Banns .carouselImg {
     width: 100%;
     min-width: 100%;
     margin: 0 auto;
     display: block;
-    max-height: 374px;
+    height: 400px;
+    min-height: 400px;
+    max-height: 400px;
 }
+
