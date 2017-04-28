@@ -1,4 +1,52 @@
 .cover {
-    height: auto;
-    width: 120px;
+   height: auto;
+    max-height: 185px;
+    min-height: 185px;
+    width: 200px;
+    margin: 0 auto;
+    display: block;
+}
+
+.card:hover{
+    box-shadow: 0px 5px 10px #999;
+    padding: 20px;
+}
+.card{
+    padding: 20px;
+}
+
+.visibleOffer{
+    display: block;
+    background:#e74c3c; 
+    padding: 0px;
+}
+
+
+.visibleOffer span{
+    color: #fff;
+    font-weight: bold;
+    margin-left: -2px;
+    text-transform: uppercase;
+    text-align: center !important;
+}
+
+.visiblePremiere{
+    display: block;
+    background:#16a085; 
+    padding: 0px;
+}
+.visiblePremiere span{
+    margin-left: -3px;
+    text-transform: uppercase;
+    color: #fff;
+    font-weight: bold;
+    text-align: center !important;
+}
+
+.hide{
+    display: none;
+}
+
+.relative{
+    position: relative !important;
 }

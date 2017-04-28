@@ -5,10 +5,13 @@
   "dependencies": {
     "react": "^15.5.4",
     "react-bootstrap": "^0.30.10",
+    "react-custom-youtube-player": "0.0.1-alpha.3",
     "react-dom": "^15.5.4",
-    "react-html5video": "^2.1.0",
     "react-image-gallery": "^0.7.15",
-    "react-router": "^3.0.2"
+    "react-router": "^3.0.2",
+    "react-slick": "^0.14.11",
+    "react-social-buttons": "^1.0.8",
+    "stateful-react-youtube": "0.0.6"
   },
   "devDependencies": {
     "react-scripts": "0.9.5"

@@ -5,3 +5,28 @@
 .Product .imageProduct{
     padding-top: 30px;
 }
+
+.Product .fortitle {
+    color: #ff4521;
+}
+.Product .imagenCover {
+    height: auto;
+    min-width: 100%;
+    width: 100%;
+}
+.Product .noPadding {
+    padding: 0px !important;
+}
+
+.Product .plus {
+    border-radius: 0px !important;
+}
+
+.Product .btn {
+    border-radius: 0px !important;
+}
+
+.Product .sku{
+    margin-top: -25px;
+    font-size: 12px;
+}

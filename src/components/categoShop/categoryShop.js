@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './categoryShop.css';
 import {Tabs,Tab,Button,Grid,Row,Col} from 'react-bootstrap';
 import {Link} from 'react-router';
+import '.././icons/css/font-awesome.css';
 
 
 let dev = 'http://localhost:4000';
@@ -10,21 +11,25 @@ let prod = 'https://dowhile-videomania.herokuapp.com';
 class Item extends Component {
     render(){
         return(
-            <Col xs={12} md={4}>
-                <Col xs={12} md={6}>
-                    <Link to={location.hash.substr(2) + '/' + this.props.url}>
+             <Link to={location.hash.substr(2) + '/' + this.props.url}>
+                <Col xs={12} md={3} className="marginBottom card noPadding">
+                    <Col xs={12} md={12} className="">
                         <img src={this.props.image} className="cover" />
-                    </Link>
+                        <br/>
+                        <Col>
+                            <Col xs={12} md={this.props.premiere ? 6:12}className={this.props.offer ? 'visibleOffer':'hide'}>
+                                <span> Oferta </span>
+                            </Col>
+                            <Col xs={12} md={this.props.offer ? 6:12} className={this.props.premiere ? 'visiblePremiere':'hide'}>
+                                <span> Estreno </span>
+                            </Col>
+                        </Col>
+                        <br/>
+                        <h4 className="text-center name">{this.props.name}</h4>
+                        <h4 className="text-center price">$ {this.props.price}.-</h4>
+                    </Col>
                 </Col>
-                <Col xs={12} md={6}>
-                    <Link to={location.hash.substr(2) + '/' + this.props.url}>
-                        <h4>{this.props.name}</h4>
-                    </Link>
-                    <br/>
-                    <h4>$ {this.props.price}.-</h4>
-                    <Button>Agregar</Button>
-                </Col>
-            </Col>
+            </Link>
         )
     }
 }
@@ -165,19 +170,27 @@ class CategoryShop extends Component {
     }
     render() {
         return (
-            <div className="CategoryShop">
-                <div className="container-full">
-                    <div className="rown minH">
-                         <img src={this.state.banner} alt="" className="banners"/>
-                    </div>
-                    <br/>
-                    <br/>
-                    <div className="rown">
+            <Grid className="CategoryShop" fluid={true}>
+                <Row className="noPadding">
+                    <Col xs={12} md={12}>
+                        <img src={this.state.banner} alt="" className="banners"/>
+                    </Col>
+                </Row>
+                <Row className="noPadding">
+                    <Col xs={12} md={12}>
                         <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
                             <Tab eventKey={1} title="Todos" className="paddingTabs">
                                 {this.state.all.map((item,index) => {
                                     return (
-                                        <Item key={index} image={item.image} name={item.name} price={item.price} url={item.nameUrl}/>
+                                        <Item 
+                                            key={index} 
+                                            image={item.image} 
+                                            name={item.name} 
+                                            price={item.price} 
+                                            url={item.nameUrl}
+                                            offer={item.offer}
+                                            premiere={item.premiere}
+                                        />
                                     )
                                     }
                                 )}
@@ -185,7 +198,14 @@ class CategoryShop extends Component {
                             <Tab eventKey={2} title="Estrenos" className="paddingTabs">
                                {this.state.premiere.map((item,index) => {
                                     return (
-                                        <Item key={index} image={item.image} name={item.name} price={item.price}/>
+                                        <Item 
+                                            key={index} 
+                                            image={item.image} 
+                                            name={item.name}
+                                            price={item.price} 
+                                            offer={item.offer}
+                                            premiere={item.premiere}
+                                        />
                                     )
                                     }
                                 )}
@@ -193,7 +213,14 @@ class CategoryShop extends Component {
                             <Tab eventKey={3} title="Ofertas" className="paddingTabs">
                                 {this.state.offer.map((item,index) => {
                                     return (
-                                        <Item key={index} image={item.image} name={item.name} price={item.price}/>
+                                        <Item 
+                                            key={index} 
+                                            image={item.image}
+                                            name={item.name} 
+                                            price={item.price}
+                                            offer={item.offer}
+                                            premiere={item.premiere}
+                                        />
                                     )
                                     }
                                 )}
@@ -204,7 +231,14 @@ class CategoryShop extends Component {
                                     <Tab key={index} eventKey={4+index} title={item.name} className="paddingTabs" onEntering={this._Handler.bind(this,item.name)}>
                                         {this.state.datos.map((item,index) => {
                                             return (
-                                                <Item key={index} image={item.image} name={item.name} price={item.price}/>
+                                                <Item 
+                                                    key={index} 
+                                                    image={item.image}
+                                                    name={item.name} 
+                                                    price={item.price}
+                                                    offer={item.offer}
+                                                    premiere={item.premiere}
+                                                />
                                             )
                                             }
                                         )}
@@ -212,14 +246,9 @@ class CategoryShop extends Component {
                                 )
                             })}
                         </Tabs>
-
-                        <br/>
-                        <br/>
-
-            
-                    </div>
-                </div>
-            </div>
+                    </Col>
+                </Row>
+            </Grid>
         );
     }
 }

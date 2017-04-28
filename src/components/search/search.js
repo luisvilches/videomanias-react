@@ -41,10 +41,11 @@ class Search extends Component {
                 }
             }
         })
+        console.log(location)
     }
 
-    click(){
-         this.props.router.push(this.state.api + '/PS3');
+    click(category,product){
+         this.props.router.push(this.state.api + '/' + category + '/' + product);
     }
     render(){
         return(
@@ -63,19 +64,24 @@ class Search extends Component {
                 <Row>
                     {this.state.data.map((item,index) => {
                         return (
-                            <Col xs={12} md={4}>
-                                <Col xs={12} md={6}>
-                                    <Link to={location.hash.substr(2) + '/' + item.nameUrl}>
+                            <Link to={'/'+ item.category + '/' + item.nameUrl}>
+                                <Col xs={12} md={4} className="marginBottom card relative">
+                                    <Col xs={12} md={12}>
                                         <img src={item.image} className="cover" />
-                                    </Link>
+                                        <Col>
+                                            <Col xs={12} md={6}className={item.offer ? 'visibleOffer':'hide'}>
+                                                <span> Oferta </span>
+                                            </Col>
+                                            <Col xs={12} md={6} className={item.premiere ? 'visiblePremiere':'hide'}>
+                                                <span> Estreno </span>
+                                            </Col>
+                                        </Col>
+                                        <br/>
+                                        <h4 className="text-center">{item.name}</h4>
+                                        <h4 className="text-center">$ {item.price}.-</h4>
+                                    </Col>
                                 </Col>
-                                <Col xs={12} md={6}>
-                                    <Link to={location.hash.substr(2) + '/' + this.props.url}>
-                                        <h4>{item.name}</h4>
-                                    </Link>
-                                    <br/>
-                                </Col>
-                            </Col>
+                            </Link>
                         )
                     })}
                 </Row>

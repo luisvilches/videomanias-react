@@ -5,7 +5,15 @@
 
 .CategoryShop img {
     height: auto;
-    width: 120px;
+    max-height: 185px;
+    min-height: 185px;
+    width: 200px;
+    margin: 0 auto;
+    display: block;
+}
+
+.marginBottom{
+     margin-bottom: 100px;
 }
 
 .CategoryShop .pd10{
@@ -44,16 +52,33 @@
     text-align: center;
     display: inline-block;
     float: none;
+    border-radius: 0px;
+}
+
+.nav-tabs>li:hover{
+    border-radius: 0px;
+}
+.nav-tabs>li>a{
+    color: #fff;
+    text-decoration: none;
+}
+.nav-tabs>li>a:hover{
+    border-radius: 0px !important;
+    background: #333;
+    color: #fff;
+    border-color: #333;
 }
 
 .nav-tabs{
     text-align: center;
-    background: #f1c40f;
+    background: #333;
 }
 
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+    color: #333;
     border: none;
     border-bottom: 2px solid #ff4521;
+    border-radius: 0px;
 }
 
 .CategoryShop .noMargin{
@@ -68,4 +93,76 @@
         margin-top: 0px;
         min-height: 150px;
     }
+}
+
+.noPadding {
+    padding: 0px !important;
+}
+.PaddingLeft {
+    padding-left: 50px !important;
+}
+.PaddingRight {
+    padding-right: 50px !important;
+}
+
+.plus{
+    width: 100%;
+}
+.plus, .btn-danger{
+    border-radius: 0px;
+}
+
+.card:hover{
+    box-shadow: 0px 5px 10px #999;
+    padding: 20px;
+}
+.card{
+    padding: 20px;
+}
+
+.price{
+    color: #e75353;
+    font-weight: bold;
+}
+
+.name{
+    color: #333;
+}
+
+.visibleOffer{
+    display: block;
+    background:#e74c3c; 
+    padding: 0px;
+    text-align: center;
+}
+
+
+.visibleOffer span{
+    color: #fff;
+    font-weight: bold;
+    margin-left: -2px;
+    text-transform: uppercase;
+    text-align: center !important;
+}
+
+.visiblePremiere{
+    display: block;
+    background:#16a085; 
+    padding: 0px;
+     text-align: center;
+}
+.visiblePremiere span{
+    margin-left: -3px;
+    text-transform: uppercase;
+    color: #fff;
+    font-weight: bold;
+    text-align: center !important;
+}
+
+.hide{
+    display: none;
+}
+
+.relative{
+    position: relative !important;
 }
