@@ -16,6 +16,7 @@ class App extends Component {
         this.state = {
             category: [],
             api: dev,
+            shop:'520.990',
             value: ''
         }
     }
@@ -70,7 +71,7 @@ class App extends Component {
                 
             </Nav>
             <Nav pullRight>
-                
+                <NavItem eventKey={1}><i className="fa fa-shopping-cart" aria-hidden="true"></i> $ {this.state.shop} </NavItem>
             </Nav>
             <Nav pullRight>
                 <input ref="buscar" type="search" placeholder="Buscar..." className="form-control search" onKeyPress={this._handleKeyPress.bind(this)}/>

@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import {Grid,Row,Col,Carousel,} from 'react-bootstrap';
+import {Tabs,Tab,Grid,Row,Col,Carousel,} from 'react-bootstrap';
 import {Link} from 'react-router';
 import './banner.css';
 
@@ -15,14 +15,16 @@ class Banner extends Component{
             index: 5,
             direction: null,
             banner: [],
+            console: [],
             premiere:[],
             offer:[],
+            category:[],
             api: dev
         }
     }
 
     componentWillMount(){
-     fetch(`${this.state.api}/banner`)
+     fetch(`${this.state.api}/bannersPublicidad`)
         .then(res => {
             return res.json()
         })
@@ -34,7 +36,6 @@ class Banner extends Component{
                 this.setState({
                     banner: response.data
                 })
-                console.log(response.data)
             }
         })
 
@@ -51,7 +52,6 @@ class Banner extends Component{
                 this.setState({
                     offer: response.data
                 })
-                console.log(response.data)
             }
         })
 
@@ -68,87 +68,126 @@ class Banner extends Component{
                 this.setState({
                     premiere: response.data
                 })
-                console.log(response.data)
+            }
+        })
+
+        
+
+        fetch(`${this.state.api}/bannersCategory`)
+        .then(res => {
+            return res.json()
+        })
+        .then(response => {
+            if(response.status === 'error'){
+                alert(response.message);
+            } 
+            else {
+                this.setState({
+                    console: response.data
+                })
             }
         })
     }
 
     render(){
         return(
-            <Grid className="Banns" fluid={true}>
-                <Row>
-                    <Col xs={12} md={12}>
-                        <Carousel>
-                            {this.state.banner.map((item,index) => {
-                                return(
-                                    <Carousel.Item key={index}>
-                                        <Link to={'/'+ item.category}>
-                                            <img width={900} height={500} alt="900x500" className="carouselImg" src={item.img}/>
-                                        </Link>
-                                    </Carousel.Item>
-                                )
-                            })}
-                        </Carousel>
-                    </Col>
-                </Row>
-                <br/>
-                <br/>
-                <br/>
-                <Row>
-                    <Col xs={12} md={12}>
-                        <Col xs={12} md={12} className="bgTitle">
-                            <h2 className="text-center">Estrenos</h2>
-                        </Col>
+            <div className="noPadding">
+                <Grid className="Banns" fluid={true}>
+                    <Row>
                         <Col xs={12} md={12} className="noPadding">
-                            {this.state.premiere.map((item,index) => {
+                            <Carousel>
+                                {this.state.banner.map((item,index) => {
                                     return(
-                                       <Link to={'/' + this.props.url}>
-                                            <Col xs={12} md={3} className="marginBottom card">
-                                                <Col xs={12} md={12}>
-                                                    <img src={item.image} className="cover" />
-                                                    <br/>
-                                                    <h4 className="text-center name">{item.name}</h4>
-                                                    <h4 className="text-center price">$ {item.price}.-</h4>
-                                                </Col>
-                                            </Col>
-                                        </Link>
+                                        <Carousel.Item key={index}>
+                                            <Link to={'/'+ item.category}>
+                                                <img width={900} height={500} alt="900x500" className="carouselImg" src={item.img}/>
+                                            </Link>
+                                        </Carousel.Item>
                                     )
                                 })}
+                            </Carousel>
                         </Col>
-                    </Col>
-                </Row>
-                <br/>
-                <br/>
-                <br/>
-                <Row>
-                    <Col xs={12} md={12}>
-                        <Col xs={12} md={12} className="bgTitle">
-                            <h2 className="text-center">Ofertas</h2>
-                        </Col>
-                        <Col xs={12} md={12} className="noPadding">
-                            {this.state.offer.map((item,index) => {
-                                    return(
-                                        <Link to={'/' + this.props.url}>
-                                            <Col xs={12} md={3} className="marginBottom card">
-                                                <Col xs={12} md={12}>
-                                                    <img src={item.image} className="cover" />
-                                                    <br/>
-                                                    <h4 className="text-center name">{item.name}</h4>
-                                                    <h4 className="text-center price">$ {item.price}.-</h4>
-                                                </Col>
-                                            </Col>
-                                        </Link>
+                    </Row>
+                </Grid>
+                <Grid className="topCategory">
+                    <Row className="noPadding">
+                        {this.state.console.map((item,index) => {
+                            return(
+                                <Link to={'/'+ item.category}>
+                                    <Col xs={12} md={4}>
+                                        <img src={item.img} className="img-responsive "/>
+                                    </Col>
+                                </Link>
+                            )
+                        })}
+                    </Row>
+                </Grid>
+                <Grid className="bannerTabs">
+                    <Row>
+                        <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
+                            <Tab eventKey={1} title="Ultimos Estrenos" className="paddingTabs pd100">
+                                {this.state.premiere.map((item,index) => {
+                                    return (
+                                        <Item 
+                                            key={index} 
+                                            image={item.image} 
+                                            name={item.name}
+                                            price={item.price} 
+                                            offer={item.offer}
+                                            premiere={item.premiere}
+                                        />
                                     )
-                                })}
-                        </Col>
-                        <br/>
-                        <br/>
-                        <br/>
-                    </Col>
-                </Row>
-            </Grid>
+                                    }
+                                )}
+                            </Tab>
+                            <Tab eventKey={2} title="Ultimas Ofertas" className="paddingTabs pd100">
+                                {this.state.offer.map((item,index) => {
+                                    return (
+                                        <Item 
+                                            key={index} 
+                                            image={item.image}
+                                            name={item.name} 
+                                            price={item.price}
+                                            offer={item.offer}
+                                            premiere={item.premiere}
+                                        />
+                                    )
+                                    }
+                                )}
+                            </Tab>
+                        </Tabs>
+                    </Row>
+                </Grid>
+            </div>
         )
     }
 }
 
-export default Banner;
+
+class Item extends Component {
+    render(){
+        return(
+             <Link to={location.hash.substr(2) + '/' + this.props.url}>
+                <Col xs={12} md={3} className="marginBottom card noPadding">
+                    <Col xs={12} md={12} className="">
+                        <img src={this.props.image} className="cover" />
+                        <br/>
+                        <Col>
+                            <Col xs={12} md={this.props.premiere ? 6:12}className={this.props.offer ? 'visibleOffer':'hide'}>
+                                <span> Oferta </span>
+                            </Col>
+                            <Col xs={12} md={this.props.offer ? 6:12} className={this.props.premiere ? 'visiblePremiere':'hide'}>
+                                <span> Estreno </span>
+                            </Col>
+                        </Col>
+                        <br/>
+                        <h4 className="text-center name">{this.props.name}</h4>
+                        <h4 className="text-center price">$ {this.props.price}.-</h4>
+                    </Col>
+                </Col>
+            </Link>
+        )
+    }
+}
+
+export default Banner;import Slider from 'react-slick'

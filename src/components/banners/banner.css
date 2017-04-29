@@ -1,5 +1,7 @@
 .Banns{
-    padding-top: 120px !important;
+    padding-top: 80px !important;
+    padding-bottom: 0px !important;
+    background: #f8f8f8;
 }
 .Banns .carouselImg {
     width: 100%;
@@ -14,4 +16,46 @@
 .Banns .bgTitle{
     background: #333;
     color: #fff;
+}
+
+.pd {
+    padding: 40px;
+}
+
+.pd100 {
+    padding: 80px;
+}
+.bannerTabs{
+    margin-top: 60px;
+}
+
+.bannerTabs .nav-tabs>li>a {
+    color: #333;
+}
+.bannerTabs .nav-tabs>li>a:hover{
+    border-radius: 0px !important;
+    background: #fff!important;
+    color: #333;
+    border-color: #fff;
+}
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+    border-radius: 0px !important;
+    background: #fff!important;
+    color: #333;
+    border-bottom: 4px solid #ff4521;
+}
+.bannerTabs .nav-tabs{
+    background: #fff;
+}
+.bannerTabs .nav-tabs>li{
+    width: 30%;
+}
+.topCategory{
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+.topCategory img{
+    min-height: 200px;
+    max-height: 200px;
+    border-radius: 20px;
 }
