@@ -75,3 +75,46 @@
 .ul-up{
     margin-left: -25px;
 }
+
+#session .nav-tabs>li{
+    width: 50%;
+}
+
+#session{
+    width: 100%;
+    min-width: 100%;
+    margin-top: -15px;
+}
+
+#session .nav-tabs{
+    width: 100%;
+    background: #fff;
+    
+}
+
+#session .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+    color: #333;
+    background: transparent !important;
+}
+
+#session .nav-tabs>li>a {
+    color: #333;
+}
+
+#session .nav-tabs>li>a:hover{
+    border-radius: 0px !important;
+    background: #fff;
+    color: #333;
+    border-color: transparent;
+}
+
+#session .sessionItem {
+    padding: 80px !important;
+}
+.btnClose{
+    color:#333;
+    font-size: 20px !important;
+}
+.btnClose:hover{
+    color:#c0392b;
+}
