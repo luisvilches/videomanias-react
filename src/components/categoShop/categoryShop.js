@@ -145,7 +145,7 @@ class CategoryShop extends Component {
         this.offer();
     }
 
-    componentDidMount(){
+    componentWillMount(){
      fetch(`${this.state.api}/family`)
         .then(res => {
             return res.json()

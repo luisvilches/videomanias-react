@@ -7,6 +7,7 @@ import Banners from './components/banners/banner';
 import Product from './components/products/product';
 import Search from './components/search/search';
 
+
 import './index.css';
 
 ReactDOM.render(

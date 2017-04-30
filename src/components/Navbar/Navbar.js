@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import {Link, IndexLink,hashHistory,Router} from 'react-router';
-import {Tabs,Tab,Navbar,Nav,NavItem,NavDropdown,MenuItem,Modal,Button} from 'react-bootstrap';
+import {Grid,Row,Col,Tabs,Tab,Navbar,Nav,NavItem,NavDropdown,MenuItem,Modal,Button} from 'react-bootstrap';
 import './Navbar.css';
 import '.././icons/css/font-awesome.css';
 
 let dev = 'http://localhost:4000';
 let prod = 'https://dowhile-videomania.herokuapp.com';
 
+var user = [];
 
 class App extends Component {
 
@@ -20,12 +21,15 @@ class App extends Component {
             ModalUser: false,
             ModalCart: false,
             initSession: true,
-            value: ''
+            value: '',
+            login: true,
+            user: [],
+            usuario:[]
         }
     }
 
 
-    componentDidMount(){
+    componentWillMount(){
         fetch(`${this.state.api}/category`)
         .then(res => {
             return res.json()
@@ -39,8 +43,33 @@ class App extends Component {
                     category: response.data
                 })
             }
-            //console.log(this.refs)
+        //console.log(this.refs)
         })
+        
+        fetch(`${this.state.api}/app/user/${localStorage.getItem('user')}`, {
+            headers: {
+                'Authorization': `Bearer ${ localStorage.getItem('token')}`, 
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(r => r.json())
+        .then(data => {
+            this.setState({
+                usuario: data
+            })
+            user = data;
+            console.log(data)
+        })
+
+       if(localStorage.getItem("success") === false || localStorage.getItem("success") === null){
+            this.setState({
+                login:false
+            })
+        } else {
+            this.setState({
+                login:true
+            })
+        }
     }
     _handleKeyPress(e) {
         if (e.key === 'Enter') {
@@ -56,38 +85,26 @@ class App extends Component {
         this.setState({ ModalUser: false });
     }
 
-    openUser() {
+    openUser(e) {
+         e.preventDefault()
+        if(localStorage.getItem("success") === false || localStorage.getItem("success") === null){
+            this.setState({
+                login:false
+            })
+        } else {
+            this.setState({
+                login:true
+            })
+        }
         this.setState({ ModalUser: true });
     }
 
-    login(){
-        //console.log(this.refs)
-
-        let user = this.refs.user.value;
-        let pass = this.refs.pass.value;
-
-        const formData = new FormData()
-        formData.append('name',user)
-        formData.append('password',pass)
-
-        fetch('http://localhost:4000/login', {
-        method: 'POST',
-        body: formData
-        })
-        .then(r => r.json())
-        .then(data => {
-            if(data.success === false){
-                alert('Usuario o contraseña incorrectos!!')
-            } else{
-                console.log(data)
-                this.closeUser();
-                localStorage.setItem('token', data.token);
-            }
-        })
-
+    closeSession(){
+        localStorage.clear();
+        this.closeUser()
     }
 
-    
+        
     render() {
         return (
          <Navbar inverse collapseOnSelect fixedTop={true} fluid={true}>
@@ -121,24 +138,128 @@ class App extends Component {
                     <i className="fa fa-times-circle pull-right btnClose" onClick={this.closeUser.bind(this)} aria-hidden="true" ></i>
                 </Modal.Header>
                 <Modal.Body>
-                    <Tabs defaultActiveKey={1} id="session">
-                        <Tab eventKey={1} title="Inicio de session" className="sessionItem">
-                            <h2>inicio de sesion</h2>
-                            <br/>
-                            <input ref="user" type="text" placeholder="Nombre de usuario" className="form-control"/>
-                            <br/>
-                            <input ref="pass" type="password" placeholder="Contraseña" className="form-control"/>
-                            <br/>
-                            <input type="button" onClick={this.login.bind(this)} value="Iniciar session" className="form-control btn-danger"/>
-                        </Tab>
-                        <Tab eventKey={2} title="registrar" className="sessionItem">
-                            <h2>registro</h2>
-                        </Tab>
-                    </Tabs>
+                   {this.state.login ? <Users handler={this.closeSession.bind(this)}/>: <LoginRegister handler={this.closeUser.bind(this)} api={this.state.api}/>}
                 </Modal.Body>
             </Modal>
         </Navbar>
         );
+    }
+}
+
+class LoginRegister extends Component {
+
+    constructor(props){
+        super(props);
+
+        this.state = {
+            api: this.props.api
+        }
+        
+    }
+    login(){
+        //console.log(this.refs)
+
+        let user = this.refs.user.value;
+        let pass = this.refs.pass.value;
+
+        const formData = new FormData()
+        formData.append('name',user)
+        formData.append('password',pass)
+
+        fetch(this.state.api + '/login', {
+        method: 'POST',
+        body: formData
+        })
+        .then(r => r.json())
+        .then(data => {
+            if(data.success === false){
+                alert('Usuario o contraseña incorrectos!!')
+            } else{
+                console.log(data)
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('success', data.success);
+                localStorage.setItem('user', data.user._id)
+                this.setState({
+                    login: true,
+                    user: data
+                })
+                this.props.handler();
+            }
+        })
+
+    }
+
+    render(){
+        return(
+            <Tabs defaultActiveKey={1} id="session">
+                <Tab eventKey={1} title="Inicio de session" className="sessionItem">
+                    <h2>inicio de sesion</h2>
+                    <br/>
+                    <input ref="user" type="text" placeholder="Nombre de usuario" className="form-control"/>
+                    <br/>
+                    <input ref="pass" type="password" placeholder="Contraseña" className="form-control"/>
+                    <br/>
+                    <input type="button" onClick={this.login.bind(this)} value="Iniciar session" className="form-control btn-danger"/>
+                </Tab>
+                <Tab eventKey={2} title="registrar" className="sessionItem">
+                    <h2>Formulario de registro</h2>
+                    <br/>
+                    <input ref="rut" type="text" placeholder="Rut" className="form-control"/>
+                    <br/>
+                    <input ref="name" type="text" placeholder="Nombre" className="form-control"/>
+                    <br/>
+                    <input ref="secondName" type="text" placeholder="Apellido" className="form-control"/>
+                    <br/>
+                    <input ref="mail" type="text" placeholder="Email" className="form-control"/>
+                    <br/>
+                    <input ref="phone" type="text" placeholder="Telefono" className="form-control"/>
+                    <br/>
+                    <input ref="username" type="text" placeholder="Nombre de usuario" className="form-control"/>
+                    <br/>
+                    <input ref="password" type="password" placeholder="Contraseña" className="form-control"/>
+                    <br/>
+                    <input ref="secondPassword" type="password" placeholder="Nuevamente la contraseña" className="form-control"/>
+                    <br/>
+                    <input type="button" onClick={this.props.click} value="Registrar" className="form-control btn-danger"/>
+                </Tab>
+            </Tabs>
+        )
+    }
+}
+
+class Users extends Component {
+
+     
+
+    componentDidMount(){
+        if(localStorage.getItem("success") === false || localStorage.getItem("success") === null){
+            this.setState({
+                login:false
+            })
+        } else {
+            this.setState({
+                login:true
+            })
+        }
+    }
+
+    closeSession(){
+        localStorage.clear();
+    }
+
+    render(){
+        return(
+            <Grid>
+                <Row>
+                    <Col xs={12} md={12}>
+                        <h2> username: {user.name}</h2>
+                        <h2> id: {user._id}</h2>
+                        <br/>
+                        <Button onClick={this.props.handler}>Cerrar session</Button>
+                    </Col>
+                </Row>
+            </Grid>
+        )
     }
 }
 
