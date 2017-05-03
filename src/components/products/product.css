@@ -30,3 +30,11 @@
     margin-top: -25px;
     font-size: 12px;
 }
+
+.visible{
+    display: block;
+}
+
+.hidde{
+    display: none;
+}

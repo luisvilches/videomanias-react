@@ -99,9 +99,7 @@ class Banner extends Component{
                                 {this.state.banner.map((item,index) => {
                                     return(
                                         <Carousel.Item key={index}>
-                                            <Link to={'/'+ item.category}>
-                                                <img width={900} height={500} alt="900x500" className="carouselImg" src={item.img}/>
-                                            </Link>
+                                             <img width={900} height={600} alt="900x500" className="carouselImg" src={item.img}/>
                                         </Carousel.Item>
                                     )
                                 })}
@@ -114,7 +112,7 @@ class Banner extends Component{
                         {this.state.console.map((item,index) => {
                             return(
                                 <Link to={'/'+ item.category}>
-                                    <Col xs={12} md={4}>
+                                    <Col xs={12} md={4} className="card">
                                         <img src={item.img} className="img-responsive "/>
                                     </Col>
                                 </Link>

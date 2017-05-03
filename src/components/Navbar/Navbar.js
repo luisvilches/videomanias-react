@@ -17,7 +17,7 @@ class App extends Component {
         this.state = {
             category: [],
             api: dev,
-            shop:'520.990',
+            shop: 0,
             ModalUser: false,
             ModalCart: false,
             initSession: true,
@@ -28,8 +28,9 @@ class App extends Component {
         }
     }
 
+    //TRAE LAS CATEGORIAS
 
-    componentWillMount(){
+    categorys(){
         fetch(`${this.state.api}/category`)
         .then(res => {
             return res.json()
@@ -43,9 +44,12 @@ class App extends Component {
                     category: response.data
                 })
             }
-        //console.log(this.refs)
         })
-        
+    }
+
+    //TRAE TODA LA INFORMACION DEL USUARIO
+
+    users(){
         fetch(`${this.state.api}/app/user/${localStorage.getItem('user')}`, {
             headers: {
                 'Authorization': `Bearer ${ localStorage.getItem('token')}`, 
@@ -58,10 +62,48 @@ class App extends Component {
                 usuario: data
             })
             user = data;
-            console.log(data)
+            console.log(this.state.usuario._id)
+            return data;
         })
+        .then(user => {
+            fetch(`${this.state.api}/user/cart/total/${user._id}`)
+            .then(res => res.json())
+            .then(result => {
+                this.setState({
+                    shop: result.total
+                })
+            })
+        })
+    }
 
-       if(localStorage.getItem("success") === false || localStorage.getItem("success") === null){
+    intervalCartUser(){
+        var api = this.state.api;
+            fetch(`${api}/app/user/${localStorage.getItem('user')}`, {
+            headers: {
+                'Authorization': `Bearer ${ localStorage.getItem('token')}`, 
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(r => r.json())
+        .then(data => {
+            return data;
+        })
+        .then(user => {
+            fetch(`${api}/user/cart/total/${user._id}`)
+            .then(res => res.json())
+            .then(result => {
+                this.setState({
+                    shop: result.total
+                })
+                console.log(result)
+            })
+        })
+    }
+
+    // VALIDA SI LA SESSION ESTA INICIADA
+
+    validationSession(){
+        if(localStorage.getItem("success") === false || localStorage.getItem("success") === null){
             this.setState({
                 login:false
             })
@@ -71,6 +113,9 @@ class App extends Component {
             })
         }
     }
+
+    //FUNCION PARA LA BUSQUEDA AL PRECIONAR LA TECLA ENTER
+    
     _handleKeyPress(e) {
         if (e.key === 'Enter') {
            console.log(hashHistory)
@@ -81,9 +126,20 @@ class App extends Component {
         }
     }
 
+    // FUNCION QUE CIERRA EL MODAL DE USUARIO
+
     closeUser() {
         this.setState({ ModalUser: false });
     }
+
+    // FUNCION PARA EL INICIO DE SESSION
+
+    afterSession(){
+        this.users();
+        this.closeUser();
+    }
+
+    // FUNCION QUE HABRE EL MODAL DE USUARIO
 
     openUser(e) {
          e.preventDefault()
@@ -99,12 +155,30 @@ class App extends Component {
         this.setState({ ModalUser: true });
     }
 
+    // FUNCION QUE CIERRA LA SESSION LIMPIANDO EL LOCALSTORAGE
+
     closeSession(){
         localStorage.clear();
-        this.closeUser()
+        this.users();
+        this.setState({
+            shop:0
+        });
+        this.closeUser();
+        location.reload();
+        
     }
 
+    // FUNCIONES QUE SE EJECUTAN ANTES DEL RENDERIZADO DEL COMPONENTE
+
+    componentWillMount(){
         
+        this.categorys();
+        this.users();
+        this.validationSession();
+        this.intervalCartUser();
+       
+    }
+
     render() {
         return (
          <Navbar inverse collapseOnSelect fixedTop={true} fluid={true}>
@@ -138,7 +212,7 @@ class App extends Component {
                     <i className="fa fa-times-circle pull-right btnClose" onClick={this.closeUser.bind(this)} aria-hidden="true" ></i>
                 </Modal.Header>
                 <Modal.Body>
-                   {this.state.login ? <Users handler={this.closeSession.bind(this)}/>: <LoginRegister handler={this.closeUser.bind(this)} api={this.state.api}/>}
+                   {this.state.login ? <Users handler={this.closeSession.bind(this)}/>: <LoginRegister handler={this.afterSession.bind(this)} api={this.state.api}/>}
                 </Modal.Body>
             </Modal>
         </Navbar>
@@ -184,6 +258,8 @@ class LoginRegister extends Component {
                     user: data
                 })
                 this.props.handler();
+                this.forceUpdate();
+                location.reload();
             }
         })
 
@@ -249,12 +325,18 @@ class Users extends Component {
 
     render(){
         return(
-            <Grid>
+            <Grid fluid>
                 <Row>
                     <Col xs={12} md={12}>
-                        <h2> username: {user.name}</h2>
-                        <h2> id: {user._id}</h2>
-                        <br/>
+                        <Tabs defaultActiveKey={1} id="session">
+                            <Tab eventKey={1} title="Mi cuenta" className="sessionItem">
+                                <h5>Bienvenido {user.name}</h5>
+                                <br/>
+                            </Tab>
+                            <Tab eventKey={2} title="Mis compras" className="sessionItem">
+                                
+                            </Tab>
+                        </Tabs>
                         <Button onClick={this.props.handler}>Cerrar session</Button>
                     </Col>
                 </Row>

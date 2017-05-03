@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router';
-import {Grid,Row,Col,Button} from 'react-bootstrap';
+import {Grid,Row,Col,Button,Alert} from 'react-bootstrap';
 import './product.css';
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
 import '.././icons/css/font-awesome.css';
-import YouTubeCustomPlayer from 'react-custom-youtube-player'
+import YouTubeCustomPlayer from 'react-custom-youtube-player';
+
 
 
 
@@ -19,11 +20,102 @@ class Product extends Component {
 
         this.state = {
             data: [],
-            api:dev
+            api:dev,
+            usuario:[],
+            login: false,
+            alertVisible: false
         }
     }
-     componentWillMount(){
-       fetch(`${this.state.api}/products/${this.props.params.category}/${this.props.params.product}`)
+
+    //TRAE TODA LA INFORMACION DEL USUARIO
+
+    users(){
+        fetch(`${this.state.api}/app/user/${localStorage.getItem('user')}`, {
+            headers: {
+                'Authorization': `Bearer ${ localStorage.getItem('token')}`, 
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(r => r.json())
+        .then(data => {
+            this.setState({
+                usuario: data
+            })
+        })
+    }
+
+    intervalCartUser(){
+        var api = this.state.api;
+            fetch(`${api}/app/user/${localStorage.getItem('user')}`, {
+            headers: {
+                'Authorization': `Bearer ${ localStorage.getItem('token')}`, 
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(r => r.json())
+        .then(data => {
+            return data;
+        })
+        .then(user => {
+            fetch(`${api}/user/cart/total/${user._id}`)
+            .then(res => res.json())
+            .then(result => {
+                this.setState({
+                    shop: result.total
+                })
+                console.log(result)
+            })
+        })
+    }
+    // AGREGAR AL CARRO DE COMPRAS
+
+    addToCart(){
+        if(localStorage.getItem("success") === false || localStorage.getItem("success") === null){
+            this.setState({alertVisible: true});
+        } else {
+            if(this.refs.cantidad.value === null || this.refs.cantidad.value === '' || this.refs.cantidad.value === '0'){
+                alert('debes ingresar una cantidad')
+            } else {
+                
+                let item = this.state.data.name;
+                let cant = this.refs.cantidad.value;
+                let price = this.state.data.price;
+                let sku = this.state.data.sku;
+
+                const formData = new FormData()
+                formData.append('sku',sku)
+                formData.append('cant',cant)
+                formData.append('item',item)
+                formData.append('price',price)
+
+                fetch(`${this.state.api}/user/cart/${localStorage.getItem('user')}`, {
+                method: 'POST',
+                body: formData
+                })
+                .then(r => r.json())
+                .then(data => {
+                        console.log('j');
+                })
+            }
+        }
+    }
+
+    // VALIDA SI LA SESSION ESTA INICIADA
+
+    validationSession(){
+        if(localStorage.getItem("success") === false || localStorage.getItem("success") === null){
+            this.setState({
+                alertVisible:false
+            })
+        } else {
+            this.setState({
+                alertVisible:true
+            })
+        }
+    }
+
+    getProducts(){
+        fetch(`${this.state.api}/products/${this.props.params.category}/${this.props.params.product}`)
         .then(res => {
             return res.json()
         })
@@ -35,9 +127,19 @@ class Product extends Component {
                 this.setState({
                     data: response.data
                 })
-                console.log(response.data.gallery.img)
+                console.log(response.data)
             }
         })
+    }
+    handleAlertDismiss() {
+        this.setState({alertVisible: false});
+    }
+
+     componentWillMount(){
+       this.users();
+       this.getProducts();
+       this.validationSession();
+       
     }
     _onReady(event) {
     // access to player in all event handlers via event.target 
@@ -71,13 +173,24 @@ class Product extends Component {
                                 <Row>
                                     <Col xs={12} md={6} className="noPadding">
                                         <br/>
-                                        <input type="number" className="form-control plus" placeholder="Cantidad"/>
+                                        <input 
+                                            type="number" 
+                                            ref="cantidad"
+                                            className={`form-control plus ${this.state.alertVisible ? 'visible':'hidde'}`} 
+                                            placeholder="Cantidad"
+                                        />
                                     </Col>
                                     <Col xs={12} md={6}  className="noPadding">
                                         <br/>
-                                        <Button block bsStyle="danger"><i className="fa fa-cart-plus"></i></Button>
+                                        <Button 
+                                            block 
+                                            bsStyle="danger" 
+                                            className={this.state.alertVisible ? 'visible':'hidde'} 
+                                            onClick={this.addToCart.bind(this)}>
+                                            <i className="fa fa-cart-plus"></i>
+                                        </Button>
                                     </Col>
-                                    <Col xs={12} md={12}  className="noPadding">
+                                    <Col xs={12} md={12}  className={`noPadding ${this.state.alertVisible ? 'visible':'hidde'}`}>
                                         <p>*todos los precios sin iva incluido</p>
                                     </Col>
                                 </Row>
@@ -85,6 +198,7 @@ class Product extends Component {
                             <Col xs={12} md={12}>
                                 <p className="sku">SKU: {this.state.data.sku}</p>
                             </Col>
+                            {this.state.alertVisible ? null : <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}><h4>Debes Iniciar session para continuar!</h4></Alert>}
                         </Col>
                          <Col xs={12} md={12}>
                             <br/>

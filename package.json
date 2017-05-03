@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "react": "^15.5.4",
+    "react-alert": "^1.0.14",
     "react-bootstrap": "^0.30.10",
     "react-custom-youtube-player": "0.0.1-alpha.3",
     "react-dom": "^15.5.4",
