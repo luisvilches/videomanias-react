@@ -3,6 +3,9 @@ import {Link, IndexLink,hashHistory,Router} from 'react-router';
 import {Grid,Row,Col,Tabs,Tab,Navbar,Nav,NavItem,NavDropdown,MenuItem,Modal,Button,Alert,Table,thead,tbody,tr} from 'react-bootstrap';
 import './Navbar.css';
 import '.././icons/css/font-awesome.css';
+import Alert2 from 'react-s-alert';
+import 'react-s-alert/dist/s-alert-default.css';
+import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
 let dev = 'http://localhost:4000';
 let prod = 'https://dowhile-videomania.herokuapp.com';
@@ -327,7 +330,8 @@ class LoginRegister extends Component {
         super(props);
 
         this.state = {
-            api: this.props.api
+            api: this.props.api,
+            rut: false
         }
         
     }
@@ -348,8 +352,55 @@ class LoginRegister extends Component {
     }
 
     register(){
+
+        let rut = this.refs.rut.value;
     
-        console.log(this.validaRut('17030957-k'))
+        console.log(this.validaRut(rut))
+
+        if(rut === null || rut === ''){
+            Alert2.error('Debes ingresar tu Rut para continuar', {
+                        position: 'top',
+                        effect: 'scale',
+                        onShow: function () {
+                            setTimeout(function(){
+                                Alert2.closeAll()
+                            },3000)
+                        },
+                        beep: false,
+                        offset: 100
+                    });
+        } else {
+            if(this.validaRut(rut) === true){
+                this.setState({
+                    rut: this.validaRut(rut)
+                })
+                Alert2.success('registro con exito', {
+                        position: 'top',
+                        effect: 'scale',
+                        onShow: function () {
+                            setTimeout(function(){
+                                Alert2.closeAll()
+                            },3000)
+                        },
+                        beep: false,
+                        offset: 100
+                    });
+            }else {
+                if(!this.validaRut(rut) === true){
+                    Alert2.error('Rut ingresado no es valido', {
+                        position: 'top',
+                        effect: 'scale',
+                        onShow: function () {
+                            setTimeout(function(){
+                                Alert2.closeAll()
+                            },3000)
+                        },
+                        beep: false,
+                        offset: 100
+                    });
+                }
+            }
+        }
     }
 
     login(){
@@ -400,9 +451,9 @@ class LoginRegister extends Component {
                 </Tab>
                 <Tab eventKey={2} title="registrar" className="sessionItem">
                     <h2>Formulario de registro</h2>
+                    <Alert2 stack={{limit: 3}} html={false} />
                     <br/>
                     <input ref="rut" type="text" placeholder="Rut" className="form-control" required/>
-                    <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}><h4>El rut no es valido</h4></Alert>
                     <br/>
                     <input ref="name" type="text" placeholder="Nombre" className="form-control" required/>
                     <br/>
