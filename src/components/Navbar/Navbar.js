@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Link, IndexLink,hashHistory,Router} from 'react-router';
-import {Grid,Row,Col,Tabs,Tab,Navbar,Nav,NavItem,NavDropdown,MenuItem,Modal,Button} from 'react-bootstrap';
+import {Grid,Row,Col,Tabs,Tab,Navbar,Nav,NavItem,NavDropdown,MenuItem,Modal,Button,Alert,Table,thead,tbody,tr} from 'react-bootstrap';
 import './Navbar.css';
 import '.././icons/css/font-awesome.css';
 
@@ -24,8 +24,13 @@ class App extends Component {
             value: '',
             login: true,
             user: [],
-            usuario:[]
+            usuario:[],
+            reload: this.props.reloadStatus
         }
+    }
+
+    componentWillReceiveProps(){
+        this.componentWillMount();
     }
 
     //TRAE LAS CATEGORIAS
@@ -155,6 +160,17 @@ class App extends Component {
         this.setState({ ModalUser: true });
     }
 
+    // FUNCION QUE ABRE MODAL CARRITO COMPRAS
+
+    openCart() {
+        this.setState({ ModalCart: true });
+    }
+    closeCart() {
+        this.setState({ ModalCart: false });
+    }
+
+    
+
     // FUNCION QUE CIERRA LA SESSION LIMPIANDO EL LOCALSTORAGE
 
     closeSession(){
@@ -164,7 +180,7 @@ class App extends Component {
             shop:0
         });
         this.closeUser();
-        location.reload();
+        this.componentWillMount();
         
     }
 
@@ -200,7 +216,7 @@ class App extends Component {
                 
             </Nav>
             <Nav pullRight>
-                <NavItem eventKey={1}><i className="fa fa-shopping-cart" aria-hidden="true"></i> $ {this.state.shop} </NavItem>
+                <NavItem eventKey={1} onClick={this.openCart.bind(this)}><i className="fa fa-shopping-cart" aria-hidden="true"></i> $ {this.state.shop} </NavItem>
                 <NavItem eventKey={2} onClick={this.openUser.bind(this)}><i className="fa fa-user" aria-hidden="true" ></i></NavItem>
             </Nav>
             <Nav pullRight>
@@ -212,11 +228,96 @@ class App extends Component {
                     <i className="fa fa-times-circle pull-right btnClose" onClick={this.closeUser.bind(this)} aria-hidden="true" ></i>
                 </Modal.Header>
                 <Modal.Body>
-                   {this.state.login ? <Users handler={this.closeSession.bind(this)}/>: <LoginRegister handler={this.afterSession.bind(this)} api={this.state.api}/>}
+                   {this.state.login ? <Users handler={this.closeSession.bind(this)} reload={this.componentWillMount.bind(this)}/>: <LoginRegister handler={this.afterSession.bind(this)} api={this.state.api}/>}
+                </Modal.Body>
+            </Modal>
+            <Modal show={this.state.ModalCart} onHide={this.closeCart.bind(this)}>
+                <Modal.Header closeButton>
+                    <i className="fa fa-times-circle pull-right btnClose" onClick={this.closeCart.bind(this)} aria-hidden="true" ></i>
+                    <h3>Mi carrito de compras</h3>
+                </Modal.Header>
+                <Modal.Body>
+                   {this.state.login ? <CartLoginActive dirApi={this.state.api} reload={this.users.bind(this)}/> : <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}><h4>Debes Iniciar session para continuar!</h4></Alert>}
                 </Modal.Body>
             </Modal>
         </Navbar>
         );
+    }
+}
+
+class CartLoginActive extends Component{
+    constructor(props){
+        super(props);
+
+        this.state = {
+            api: this.props.dirApi,
+            cart: []
+        }
+    }
+
+    componentWillMount(){
+        fetch(`${this.state.api}/app/user/${localStorage.getItem('user')}`,{
+            headers: {
+                'Authorization': `Bearer ${ localStorage.getItem('token')}`, 
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(response => {
+            this.setState({
+                cart: response.cart
+            })
+            console.log(response.cart)
+        })
+    }
+
+    deleteCartItem(id){
+        fetch(`${this.state.api}/user/cart/${id}`,{
+            method: 'DELETE'
+        })
+        .then(res => res.json())
+        .then(response => {
+            this.componentWillMount();
+            this.props.reload();
+        })
+    }
+    render(){
+        return(
+            <Grid fluid>
+                <Row>
+                    <Table responsive>
+                        <thead>
+                        <tr>
+                            <th>SKU</th>
+                            <th>ITEM</th>
+                            <th>CANTIDAD</th>
+                            <th>PRECIO</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            {this.state.cart.map((item,index) => {
+                                return(
+                                    <tr>
+                                        <td>{item.sku}</td>
+                                        <td>{item.item}</td>
+                                        <td className="text-center">{item.cant}</td>
+                                        <td>{item.price}</td>
+                                        <td>
+                                            <Button bsStyle="danger" onClick={this.deleteCartItem.bind(this,item._id)}>x</Button>
+                                        </td>
+                                    </tr>
+                                )
+                            })}
+                        </tbody>
+                    </Table>
+                    <Col xs={12} md={12} className="conatinerGenerateSale">
+                        <br/>
+                        <Button bsStyle="info" className="pull-right">Generar compra</Button>
+                    </Col>                    
+                </Row>
+            </Grid>
+        )
     }
 }
 
@@ -230,6 +331,27 @@ class LoginRegister extends Component {
         }
         
     }
+    validaRut(rutCompleto) {
+        if (!/^[0-9]+[-|‐]{1}[0-9kK]{1}$/.test( rutCompleto ))
+            return false;
+        var tmp 	= rutCompleto.split('-');
+        var digv	= tmp[1]; 
+        var rut 	= tmp[0];
+        if ( digv == 'K' ) digv = 'k' ;
+        return (this.dv(rut) == digv );
+    }
+    dv(T){
+        var M=0,S=1;
+        for(;T;T=Math.floor(T/10))
+            S=(S+T%10*(9-M++%6))%11;
+        return S?S-1:'k';
+    }
+
+    register(){
+    
+        console.log(this.validaRut('17030957-k'))
+    }
+
     login(){
         //console.log(this.refs)
 
@@ -258,8 +380,7 @@ class LoginRegister extends Component {
                     user: data
                 })
                 this.props.handler();
-                this.forceUpdate();
-                location.reload();
+                this.props.reload();
             }
         })
 
@@ -280,23 +401,24 @@ class LoginRegister extends Component {
                 <Tab eventKey={2} title="registrar" className="sessionItem">
                     <h2>Formulario de registro</h2>
                     <br/>
-                    <input ref="rut" type="text" placeholder="Rut" className="form-control"/>
+                    <input ref="rut" type="text" placeholder="Rut" className="form-control" required/>
+                    <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}><h4>El rut no es valido</h4></Alert>
                     <br/>
-                    <input ref="name" type="text" placeholder="Nombre" className="form-control"/>
+                    <input ref="name" type="text" placeholder="Nombre" className="form-control" required/>
                     <br/>
-                    <input ref="secondName" type="text" placeholder="Apellido" className="form-control"/>
+                    <input ref="secondName" type="text" placeholder="Apellido" className="form-control" required/>
                     <br/>
-                    <input ref="mail" type="text" placeholder="Email" className="form-control"/>
+                    <input ref="mail" type="text" placeholder="Email" className="form-control" required/>
                     <br/>
-                    <input ref="phone" type="text" placeholder="Telefono" className="form-control"/>
+                    <input ref="phone" type="text" placeholder="Telefono" className="form-control" required/>
                     <br/>
-                    <input ref="username" type="text" placeholder="Nombre de usuario" className="form-control"/>
+                    <input ref="username" type="text" placeholder="Nombre de usuario" className="form-control" required/>
                     <br/>
-                    <input ref="password" type="password" placeholder="Contraseña" className="form-control"/>
+                    <input ref="password" type="password" placeholder="Contraseña" className="form-control" required/>
                     <br/>
-                    <input ref="secondPassword" type="password" placeholder="Nuevamente la contraseña" className="form-control"/>
+                    <input ref="secondPassword" type="password" placeholder="Nuevamente la contraseña" className="form-control" required/>
                     <br/>
-                    <input type="button" onClick={this.props.click} value="Registrar" className="form-control btn-danger"/>
+                    <input type="button" onClick={this.register.bind(this)} value="Registrar" className="form-control btn-danger"/>
                 </Tab>
             </Tabs>
         )

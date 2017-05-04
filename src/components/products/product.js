@@ -23,6 +23,7 @@ class Product extends Component {
             api:dev,
             usuario:[],
             login: false,
+            price: '',
             alertVisible: false
         }
     }
@@ -94,7 +95,7 @@ class Product extends Component {
                 })
                 .then(r => r.json())
                 .then(data => {
-                        console.log('j');
+                    this.props.reload();
                 })
             }
         }
@@ -125,9 +126,9 @@ class Product extends Component {
             } 
             else {
                 this.setState({
-                    data: response.data
+                    data: response.data,
+                    price: response.price
                 })
-                console.log(response.data)
             }
         })
     }
@@ -144,7 +145,9 @@ class Product extends Component {
     _onReady(event) {
     // access to player in all event handlers via event.target 
     event.target.pauseVideo();
-  }
+    }
+
+
     render(){
         return(
             <div>
@@ -166,7 +169,7 @@ class Product extends Component {
                             <br/>
                             <Col xs={12} md={5}>
                                 <br/>
-                                <h4>$ {this.state.data.price}.-</h4>
+                                <h4>$ {this.state.price}.-</h4>
                                 <br/>
                             </Col>
                             <Col xs={12} md={7}>
@@ -205,6 +208,7 @@ class Product extends Component {
                             <br/>
                             <br/>
                             <h3 className="fortitle">{this.state.data.name}</h3>
+                            <p>Genero: {this.state.data.gender}</p>
                             <br/>
                             <h4>Descripción:</h4>
                             <br/>

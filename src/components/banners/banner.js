@@ -125,12 +125,30 @@ class Banner extends Component{
                         <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
                             <Tab eventKey={1} title="Ultimos Estrenos" className="paddingTabs pd100">
                                 {this.state.premiere.map((item,index) => {
+                                    function format(valor){
+                                        if(valor === null){
+                                            valor = 0;
+                                            return valor;
+                                        }
+                                        else {
+                                            var num = valor.toString().replace(/\./g,'');
+                                            if(!isNaN(num)){
+                                                num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+                                                num = num.split('').reverse().join('').replace(/^[\.]/,'');
+                                                valor = num;
+                                                return valor
+                                            } else { 
+                                                console.log('Solo se permiten numeros');
+                                                valor = valor.replace(/[^\d\.]*/g,'');
+                                            }
+                                        }
+                                    }
                                     return (
                                         <Item 
                                             key={index} 
                                             image={item.image} 
                                             name={item.name}
-                                            price={item.price} 
+                                            price={format(item.price)} 
                                             offer={item.offer}
                                             premiere={item.premiere}
                                         />
@@ -140,12 +158,30 @@ class Banner extends Component{
                             </Tab>
                             <Tab eventKey={2} title="Ultimas Ofertas" className="paddingTabs pd100">
                                 {this.state.offer.map((item,index) => {
+                                    function format(valor){
+                                        if(valor === null){
+                                            valor = 0;
+                                            return valor;
+                                        }
+                                        else {
+                                            var num = valor.toString().replace(/\./g,'');
+                                            if(!isNaN(num)){
+                                                num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+                                                num = num.split('').reverse().join('').replace(/^[\.]/,'');
+                                                valor = num;
+                                                return valor
+                                            } else { 
+                                                console.log('Solo se permiten numeros');
+                                                valor = valor.replace(/[^\d\.]*/g,'');
+                                            }
+                                        }
+                                    }
                                     return (
                                         <Item 
                                             key={index} 
                                             image={item.image}
                                             name={item.name} 
-                                            price={item.price}
+                                            price={format(item.price)}
                                             offer={item.offer}
                                             premiere={item.premiere}
                                         />

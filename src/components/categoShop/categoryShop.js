@@ -168,6 +168,8 @@ class CategoryShop extends Component {
             }
         })
     }
+
+    
     render() {
         return (
             <Grid className="CategoryShop" fluid={true}>
@@ -181,12 +183,30 @@ class CategoryShop extends Component {
                         <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
                             <Tab eventKey={1} title="Todos" className="paddingTabs">
                                 {this.state.all.map((item,index) => {
+                                    function format(valor){
+                                        if(valor === null){
+                                            valor = 0;
+                                            return valor;
+                                        }
+                                        else {
+                                            var num = valor.toString().replace(/\./g,'');
+                                            if(!isNaN(num)){
+                                                num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+                                                num = num.split('').reverse().join('').replace(/^[\.]/,'');
+                                                valor = num;
+                                                return valor
+                                            } else { 
+                                                console.log('Solo se permiten numeros');
+                                                valor = valor.replace(/[^\d\.]*/g,'');
+                                            }
+                                        }
+                                    }
                                     return (
                                         <Item 
                                             key={index} 
                                             image={item.image} 
                                             name={item.name} 
-                                            price={item.price} 
+                                            price={format(item.price)} 
                                             url={item.nameUrl}
                                             offer={item.offer}
                                             premiere={item.premiere}
@@ -197,12 +217,30 @@ class CategoryShop extends Component {
                             </Tab>
                             <Tab eventKey={2} title="Estrenos" className="paddingTabs">
                                {this.state.premiere.map((item,index) => {
+                                   function format(valor){
+                                        if(valor === null){
+                                            valor = 0;
+                                            return valor;
+                                        }
+                                        else {
+                                            var num = valor.toString().replace(/\./g,'');
+                                            if(!isNaN(num)){
+                                                num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+                                                num = num.split('').reverse().join('').replace(/^[\.]/,'');
+                                                valor = num;
+                                                return valor
+                                            } else { 
+                                                console.log('Solo se permiten numeros');
+                                                valor = valor.replace(/[^\d\.]*/g,'');
+                                            }
+                                        }
+                                    }
                                     return (
                                         <Item 
                                             key={index} 
                                             image={item.image} 
                                             name={item.name}
-                                            price={item.price} 
+                                            price={format(item.price)} 
                                             offer={item.offer}
                                             premiere={item.premiere}
                                         />
@@ -212,12 +250,30 @@ class CategoryShop extends Component {
                             </Tab>
                             <Tab eventKey={3} title="Ofertas" className="paddingTabs">
                                 {this.state.offer.map((item,index) => {
+                                    function format(valor){
+                                        if(valor === null){
+                                            valor = 0;
+                                            return valor;
+                                        }
+                                        else {
+                                            var num = valor.toString().replace(/\./g,'');
+                                            if(!isNaN(num)){
+                                                num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+                                                num = num.split('').reverse().join('').replace(/^[\.]/,'');
+                                                valor = num;
+                                                return valor
+                                            } else { 
+                                                console.log('Solo se permiten numeros');
+                                                valor = valor.replace(/[^\d\.]*/g,'');
+                                            }
+                                        }
+                                    }
                                     return (
                                         <Item 
                                             key={index} 
                                             image={item.image}
                                             name={item.name} 
-                                            price={item.price}
+                                            price={format(item.price)}
                                             offer={item.offer}
                                             premiere={item.premiere}
                                         />
@@ -226,6 +282,24 @@ class CategoryShop extends Component {
                                 )}
                             </Tab>
                             {this.state.subcategory.map((item,index) => {
+                                function format(valor){
+                                        if(valor === null){
+                                            valor = 0;
+                                            return valor;
+                                        }
+                                        else {
+                                            var num = valor.toString().replace(/\./g,'');
+                                            if(!isNaN(num)){
+                                                num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+                                                num = num.split('').reverse().join('').replace(/^[\.]/,'');
+                                                valor = num;
+                                                return valor
+                                            } else { 
+                                                console.log('Solo se permiten numeros');
+                                                valor = valor.replace(/[^\d\.]*/g,'');
+                                            }
+                                        }
+                                    }
                                  
                                 return(
                                     <Tab key={index} eventKey={4+index} title={item.name} className="paddingTabs" onEntering={this._Handler.bind(this,item.name)}>
@@ -235,7 +309,7 @@ class CategoryShop extends Component {
                                                     key={index} 
                                                     image={item.image}
                                                     name={item.name} 
-                                                    price={item.price}
+                                                    price={format(item.price)}
                                                     offer={item.offer}
                                                     premiere={item.premiere}
                                                 />

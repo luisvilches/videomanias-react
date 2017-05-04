@@ -118,3 +118,8 @@
 .btnClose:hover{
     color:#c0392b;
 }
+
+.conatinerGenerateSale{
+    margin-top: 20px;
+    border-top: 1px #999 solid;
+}
