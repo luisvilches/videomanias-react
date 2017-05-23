@@ -5,8 +5,8 @@ import './product.css';
 import ImageGallery from 'react-image-gallery';
 import "react-image-gallery/styles/css/image-gallery.css";
 import '.././icons/css/font-awesome.css';
-import YouTubeCustomPlayer from 'react-custom-youtube-player';
-
+//import YouTubeCustomPlayer from 'react-custom-youtube-player';
+import YouTube from 'react-youtube';
 
 
 
@@ -142,13 +142,14 @@ class Product extends Component {
        this.validationSession();
        
     }
-    _onReady(event) {
-    // access to player in all event handlers via event.target 
-    event.target.pauseVideo();
-    }
-
 
     render(){
+
+        const opts = {
+        height: '500',
+        width: '100%'
+        }
+
         return(
             <div>
                 <Grid className="Product">
@@ -212,11 +213,11 @@ class Product extends Component {
                             <br/>
                             <h4>Descripción:</h4>
                             <br/>
-                            <p>{this.state.data.description}</p>
+                            <div dangerouslySetInnerHTML={{__html: this.state.data.description}} />
                             <br/>
                             <br/>
                             <br/>
-                             <YouTubeCustomPlayer  videoId={this.state.data.videoId} />
+                             <YouTube videoId={this.state.data.videoId} opts={opts} />
                             <br/>
                             <br/>
                             <br/>

@@ -13,6 +13,7 @@
     "react-s-alert": "^1.3.0",
     "react-slick": "^0.14.11",
     "react-social-buttons": "^1.0.8",
+    "react-youtube": "^7.4.0",
     "slick-carousel": "^1.6.0",
     "stateful-react-youtube": "0.0.6"
   },
