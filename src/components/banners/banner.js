@@ -151,6 +151,8 @@ class Banner extends Component{
                                             price={format(item.price)} 
                                             offer={item.offer}
                                             premiere={item.premiere}
+                                            url={item.nameUrl}
+                                            category={item.category}
                                         />
                                     )
                                     }
@@ -183,7 +185,9 @@ class Banner extends Component{
                                             name={item.name} 
                                             price={format(item.price)}
                                             offer={item.offer}
+                                            category={item.category}
                                             premiere={item.premiere}
+                                            url={item.nameUrl}
                                         />
                                     )
                                     }
@@ -201,7 +205,7 @@ class Banner extends Component{
 class Item extends Component {
     render(){
         return(
-             <Link to={location.hash.substr(2) + '/' + this.props.url}>
+             <Link to={location.hash.substr(2) + '/' + this.props.category + '/' + this.props.url}>
                 <Col xs={12} md={3} className="marginBottom card noPadding">
                     <Col xs={12} md={12} className="">
                         <img src={this.props.image} className="cover" />

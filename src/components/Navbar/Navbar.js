@@ -4,6 +4,7 @@ import {Grid,Row,Col,Tabs,Tab,Navbar,Nav,NavItem,NavDropdown,MenuItem,Modal,Butt
 import './Navbar.css';
 import '.././icons/css/font-awesome.css';
 import Alert2 from 'react-s-alert';
+import Alert3 from 'react-s-alert';
 import 'react-s-alert/dist/s-alert-default.css';
 import 'react-s-alert/dist/s-alert-css-effects/slide.css';
 
@@ -354,11 +355,117 @@ class LoginRegister extends Component {
     register(){
 
         let rut = this.refs.rut.value;
-    
-        console.log(this.validaRut(rut))
 
         if(rut === null || rut === ''){
-            Alert2.error('Debes ingresar tu Rut para continuar', {
+            Alert2.warning('Debes ingresar tu Rut para continuar', {
+                position: 'top',
+                effect: 'scale',
+                onShow: function () {
+                    setTimeout(function(){
+                        Alert2.closeAll()
+                    },3000)
+                },
+                beep: false,
+                offset: 100
+            });
+        }
+        else if(!this.validaRut(rut) === true){
+             Alert2.error('Rut ingresado no es valido', {
+                position: 'top',
+                effect: 'scale',
+                onShow: function () {
+                    setTimeout(function(){
+                        Alert2.closeAll()
+                    },3000)
+                },
+                beep: false,
+                offset: 100
+            });
+        }
+        else if(this.refs.name.value === '' || this.refs.name.value === 'undefined' || this.refs.name.value === null){
+            Alert2.warning('El campo nombre es requerido', {
+                position: 'top',
+                effect: 'scale',
+                onShow: function () {
+                    setTimeout(function(){
+                        Alert2.closeAll()
+                    },3000)
+                },
+                beep: false,
+                offset: 100
+            });
+        }
+        else if(this.refs.secondName.value === '' || this.refs.secondName.value === 'undefined' || this.refs.secondName.value === null){
+            Alert2.warning('El campo apellido es requerido', {
+                position: 'top',
+                effect: 'scale',
+                onShow: function () {
+                    setTimeout(function(){
+                        Alert2.closeAll()
+                    },3000)
+                },
+                beep: false,
+                offset: 100
+            });
+        }
+        else if(this.refs.mail.value === '' || this.refs.mail.value === 'undefined' || this.refs.mail.value === null){
+            Alert2.warning('El campo correo electronico es requerido', {
+                position: 'top',
+                effect: 'scale',
+                onShow: function () {
+                    setTimeout(function(){
+                        Alert2.closeAll()
+                    },3000)
+                },
+                beep: false,
+                offset: 100
+            });
+        }
+        else if(this.refs.username.value === '' || this.refs.username.value === 'undefined' || this.refs.username.value === null){
+            Alert2.warning('El campo nombre de ususario es requerido', {
+                position: 'top',
+                effect: 'scale',
+                onShow: function () {
+                    setTimeout(function(){
+                        Alert2.closeAll()
+                    },3000)
+                },
+                beep: false,
+                offset: 100
+            });
+        }
+        else if(this.refs.password.value === '' || this.refs.password.value === 'undefined' || this.refs.password.value === null){
+            Alert2.warning('El campo password es requerido', {
+                position: 'top',
+                effect: 'scale',
+                onShow: function () {
+                    setTimeout(function(){
+                        Alert2.closeAll()
+                    },3000)
+                },
+                beep: false,
+                offset: 100
+            });
+        }
+        else{
+            var formData = new FormData();
+            formData.append('rut', this.refs.rut.value)
+            formData.append('name', this.refs.name.value)
+            formData.append('apellido', this.refs.secondName.value)
+            formData.append('mail', this.refs.mail.value)
+            formData.append('phone', this.refs.phone.value)
+            formData.append('username', this.refs.username.value)
+            formData.append('password', this.refs.password.value)
+            formData.append('admin', false)
+
+            fetch(`${this.state.api}/register`,{
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(response => {
+                if(response.staus === 'success'){
+                    Alert2.success(response.message, {
                         position: 'top',
                         effect: 'scale',
                         onShow: function () {
@@ -369,25 +476,8 @@ class LoginRegister extends Component {
                         beep: false,
                         offset: 100
                     });
-        } else {
-            if(this.validaRut(rut) === true){
-                this.setState({
-                    rut: this.validaRut(rut)
-                })
-                Alert2.success('registro con exito', {
-                        position: 'top',
-                        effect: 'scale',
-                        onShow: function () {
-                            setTimeout(function(){
-                                Alert2.closeAll()
-                            },3000)
-                        },
-                        beep: false,
-                        offset: 100
-                    });
-            }else {
-                if(!this.validaRut(rut) === true){
-                    Alert2.error('Rut ingresado no es valido', {
+                }else{
+                    Alert2.error(response.message, {
                         position: 'top',
                         effect: 'scale',
                         onShow: function () {
@@ -399,42 +489,121 @@ class LoginRegister extends Component {
                         offset: 100
                     });
                 }
-            }
+            })
         }
     }
 
     login(){
-        //console.log(this.refs)
+        if(this.refs.user.value === '' || this.refs.user.value === 'undefined' || this.refs.user.value === null){
+            Alert3.warning('El campo correo electronico es requerido', {
+                position: 'top',
+                effect: 'scale',
+                onShow: function () {
+                    setTimeout(function(){
+                        Alert2.closeAll()
+                    },3000)
+                },
+                beep: false,
+                offset: 100
+            });
+        }
+        else if(this.refs.pass.value === '' || this.refs.pass.value === 'undefined' || this.refs.pass.value === null){
+            Alert3.warning('El campo password es requerido', {
+                position: 'top',
+                effect: 'scale',
+                onShow: function () {
+                    setTimeout(function(){
+                        Alert2.closeAll()
+                    },3000)
+                },
+                beep: false,
+                offset: 100
+            });
+        }
+        else{
 
-        let user = this.refs.user.value;
-        let pass = this.refs.pass.value;
+            let user = this.refs.user.value;
+            let pass = this.refs.pass.value;
 
-        const formData = new FormData()
-        formData.append('name',user)
-        formData.append('password',pass)
+            const formData = new FormData()
+            formData.append('mail',user)
+            formData.append('password',pass)
 
-        fetch(this.state.api + '/login', {
-        method: 'POST',
-        body: formData
-        })
-        .then(r => r.json())
-        .then(data => {
-            if(data.success === false){
-                alert('Usuario o contraseña incorrectos!!')
-            } else{
-                console.log(data)
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('success', data.success);
-                localStorage.setItem('user', data.user._id)
-                this.setState({
-                    login: true,
-                    user: data
-                })
-                this.props.handler();
-                this.props.reload();
-            }
-        })
+            fetch(this.state.api + '/login', {
+            method: 'POST',
+            body: formData
+            })
+            .then(r => r.json())
+            .then(data => {
+                if(data.success === false){
+                    alert('Usuario o contraseña incorrectos!!')
+                } else{
+                    console.log(data)
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('success', data.success);
+                    localStorage.setItem('user', data.user._id)
+                    this.setState({
+                        login: true,
+                        user: data
+                    })
+                    this.props.handler();
+                    this.props.reload();
+                }
+            })
+        }
 
+    }
+
+    recover(){
+        if(this.refs.user.value === "" || this.refs.user.value === 'undefined' || this.refs.user.value === null){
+            Alert3.warning('El campo correo electronico es requerido', {
+                position: 'top',
+                effect: 'scale',
+                onShow: function () {
+                    setTimeout(function(){
+                        Alert2.closeAll()
+                    },3000)
+                },
+                beep: false,
+                offset: 100
+            });
+        }
+        else {
+            var formData = new FormData();
+            formData.append('mail', this.refs.user.value)
+            fetch(`${this.state.api}/recover`,{
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(response => {
+                if(response.status === 'success'){
+                    Alert3.success(response.message, {
+                        position: 'top',
+                        effect: 'scale',
+                        onShow: function () {
+                            setTimeout(function(){
+                                Alert2.closeAll()
+                            },3000)
+                        },
+                        beep: false,
+                        offset: 100
+                    });
+                }else{
+                    Alert3.warning(response.message, {
+                        position: 'top',
+                        effect: 'scale',
+                        onShow: function () {
+                            setTimeout(function(){
+                                Alert2.closeAll()
+                            },3000)
+                        },
+                        beep: false,
+                        offset: 100
+                    });
+                }
+            })
+        }
     }
 
     render(){
@@ -442,12 +611,16 @@ class LoginRegister extends Component {
             <Tabs defaultActiveKey={1} id="session">
                 <Tab eventKey={1} title="Inicio de session" className="sessionItem">
                     <h2>inicio de sesion</h2>
+                    <Alert3 stack={{limit: 3}} html={false} />
                     <br/>
-                    <input ref="user" type="text" placeholder="Nombre de usuario" className="form-control"/>
+                    <input ref="user" type="text" placeholder="Correo electronico" className="form-control"/>
                     <br/>
                     <input ref="pass" type="password" placeholder="Contraseña" className="form-control"/>
                     <br/>
                     <input type="button" onClick={this.login.bind(this)} value="Iniciar session" className="form-control btn-danger"/>
+                    <br/>
+                    <br/>
+                    <a className="pull-right" onClick={this.recover.bind(this)}>Olvide mi contraseña</a>
                 </Tab>
                 <Tab eventKey={2} title="registrar" className="sessionItem">
                     <h2>Formulario de registro</h2>
@@ -465,9 +638,7 @@ class LoginRegister extends Component {
                     <br/>
                     <input ref="username" type="text" placeholder="Nombre de usuario" className="form-control" required/>
                     <br/>
-                    <input ref="password" type="password" placeholder="Contraseña" className="form-control" required/>
-                    <br/>
-                    <input ref="secondPassword" type="password" placeholder="Nuevamente la contraseña" className="form-control" required/>
+                    <input ref="password" type="text" placeholder="Contraseña" className="form-control" required/>
                     <br/>
                     <input type="button" onClick={this.register.bind(this)} value="Registrar" className="form-control btn-danger"/>
                 </Tab>
