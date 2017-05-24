@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './categoryShop.css';
-import {Tabs,Tab,Button,Grid,Row,Col} from 'react-bootstrap';
+import {Tabs,Tab,Button,Grid,Row,Col,Carousel} from 'react-bootstrap';
 import {Link} from 'react-router';
 import '.././icons/css/font-awesome.css';
 
@@ -48,7 +48,8 @@ class CategoryShop extends Component {
            premiere:[],
            offer:[],
            banner:'',
-           filter:[]
+           filter:[],
+           gallery:[],
         }
     }
 
@@ -136,6 +137,16 @@ class CategoryShop extends Component {
             }
         })
     }
+
+    gallery(){
+        fetch(`${this.state.api}/banner/category/${this.props.params.category}`)
+        .then(res => res.json())
+        .then(response => {
+            this.setState({
+                gallery: response.data
+            })
+        })
+    }
     
 
     componentWillReceiveProps(){
@@ -143,6 +154,7 @@ class CategoryShop extends Component {
         this.all();
         this.premiere();
         this.offer();
+        this.gallery();
     }
 
     componentWillMount(){
@@ -164,6 +176,7 @@ class CategoryShop extends Component {
                 this.all();
                 this.premiere();
                 this.offer();
+                this.gallery();
                 console.log(array)
             }
         })
@@ -175,7 +188,15 @@ class CategoryShop extends Component {
             <Grid className="CategoryShop" fluid={true}>
                 <Row className="noPadding">
                     <Col xs={12} md={12}>
-                        <img src={this.state.banner} alt="" className="banners"/>
+                        <Carousel>
+                            {this.state.gallery.map((item,index) => {
+                                return(
+                                    <Carousel.Item key={index}>
+                                            <img className="banners" src={item.img}/>
+                                    </Carousel.Item>
+                                )
+                            })}
+                        </Carousel>
                     </Col>
                 </Row>
                 <Row className="noPadding">
