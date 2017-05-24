@@ -129,6 +129,7 @@ class Product extends Component {
                     data: response.data,
                     price: response.price
                 })
+                console.log(response.data)
             }
         })
     }
@@ -150,6 +151,24 @@ class Product extends Component {
         width: '100%'
         }
 
+        function format(valor){
+            if(valor === null){
+                valor = 0;
+                return valor;
+            }
+            else {
+                var num = valor.toString().replace(/\./g,'');
+                if(!isNaN(num)){
+                    num = num.toString().split('').reverse().join('').replace(/(?=\d*\.?)(\d{3})/g,'$1.');
+                    num = num.split('').reverse().join('').replace(/^[\.]/,'');
+                    valor = num;
+                    return valor
+                } else { 
+                    console.log('Solo se permiten numeros');
+                    valor = valor.replace(/[^\d\.]*/g,'');
+                }
+            }
+        }
         return(
             <div>
                 <Grid className="Product">
@@ -170,7 +189,7 @@ class Product extends Component {
                             <br/>
                             <Col xs={12} md={5}>
                                 <br/>
-                                <h4>$ {this.state.price}.-</h4>
+                                <h4>$ {format(String(this.state.data.price))}.-</h4>
                                 <br/>
                             </Col>
                             <Col xs={12} md={7}>
