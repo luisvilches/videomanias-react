@@ -24,6 +24,7 @@ class App extends Component {
             shop: 0,
             ModalUser: false,
             ModalCart: false,
+            ModalSearch: false,
             initSession: true,
             value: '',
             login: true,
@@ -130,8 +131,6 @@ class App extends Component {
            console.log(hashHistory)
            hashHistory.push('/search/content/' + this.refs.buscar.value)
            location.reload();
-            //location = ;
-
         }
     }
 
@@ -173,6 +172,13 @@ class App extends Component {
         this.setState({ ModalCart: false });
     }
 
+    openSearch() {
+        this.setState({ ModalSearch: true });
+    }
+    closeSearch() {
+        this.setState({ ModalSearch: false });
+    }
+
     
 
     // FUNCION QUE CIERRA LA SESSION LIMPIANDO EL LOCALSTORAGE
@@ -204,7 +210,7 @@ class App extends Component {
          <Navbar inverse collapseOnSelect fixedTop={true} fluid={true}>
             <Navbar.Header>
             <Navbar.Brand>
-                <Link href="#"><img src="/img/isotipo.png" className="logo" alt=""/></Link>
+                <Link href="#"><img src="/img/logotipo.jpg" className="logo" alt=""/></Link>
             </Navbar.Brand>
             <Navbar.Toggle />
             </Navbar.Header>
@@ -220,11 +226,9 @@ class App extends Component {
                 
             </Nav>
             <Nav pullRight>
-                <NavItem eventKey={1} onClick={this.openCart.bind(this)}><i className="fa fa-shopping-cart" aria-hidden="true"></i> $ {this.state.shop} </NavItem>
-                <NavItem eventKey={2} onClick={this.openUser.bind(this)}><i className="fa fa-user" aria-hidden="true" ></i></NavItem>
-            </Nav>
-            <Nav pullRight>
-                <input ref="buscar" type="search" placeholder="Buscar..." className="form-control search" onKeyPress={this._handleKeyPress.bind(this)}/>
+                <NavItem eventKey={1} onClick={this.openUser.bind(this)}><i className="fa fa-user" aria-hidden="true" ></i></NavItem>
+                <NavItem eventKey={2} onClick={this.openSearch.bind(this)}><i className="fa fa-search" aria-hidden="true"></i></NavItem>
+                <NavItem eventKey={3} onClick={this.openCart.bind(this)}><i className="fa fa-shopping-cart" aria-hidden="true"></i> $ {this.state.shop} </NavItem>
             </Nav>
             </Navbar.Collapse>
             <Modal show={this.state.ModalUser} onHide={this.closeUser.bind(this)}>
@@ -242,6 +246,15 @@ class App extends Component {
                 </Modal.Header>
                 <Modal.Body>
                    {this.state.login ? <CartLoginActive dirApi={this.state.api} reload={this.users.bind(this)}/> : <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}><h4>Debes Iniciar session para continuar!</h4></Alert>}
+                </Modal.Body>
+            </Modal>
+            <Modal show={this.state.ModalSearch} onHide={this.closeSearch.bind(this)}>
+                <Modal.Header closeButton>
+                    <i className="fa fa-times-circle pull-right btnClose" onClick={this.closeSearch.bind(this)} aria-hidden="true" ></i>
+                    Ingrese las palabras a buscar
+                </Modal.Header>
+                <Modal.Body>
+                   <input ref="buscar" type="search" placeholder="Buscar..." className="form-control" onKeyPress={this._handleKeyPress.bind(this)}/>
                 </Modal.Body>
             </Modal>
         </Navbar>

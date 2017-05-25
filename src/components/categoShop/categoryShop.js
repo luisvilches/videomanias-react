@@ -156,8 +156,12 @@ class CategoryShop extends Component {
         this.offer();
         this.gallery();
     }
+    up(){
+        window.scrollTo(0, -15);
+    }
 
     componentWillMount(){
+        this.up();
      fetch(`${this.state.api}/family`)
         .then(res => {
             return res.json()

@@ -1,6 +1,11 @@
 body,html{
     margin:0px !important;
     padding: 0px !important;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.gbGallery{
+  background: #f8f8f8;
 }
 /* sistema de grillas con 20 columnas*/
 @media (min-width: 0px) {

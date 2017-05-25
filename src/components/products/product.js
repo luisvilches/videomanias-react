@@ -13,6 +13,8 @@ import YouTube from 'react-youtube';
 let dev = 'http://localhost:4000';
 let prod = 'https://dowhile-videomania.herokuapp.com';
 
+var arriba;
+
 class Product extends Component {
 
     constructor(props){
@@ -140,8 +142,12 @@ class Product extends Component {
      componentWillMount(){
        this.users();
        this.getProducts();
-       this.validationSession();
-       
+       this.validationSession(); 
+       this.up();   
+    }
+    
+    up(){
+        window.scrollTo(0, -15);
     }
 
     render(){
@@ -173,14 +179,8 @@ class Product extends Component {
             <div>
                 <Grid className="Product">
                     <Row>
-                        <Col xs={12} md={8}>
-                            <ImageGallery
-                            items={this.state.data.gallery}
-                            slideInterval={2000}
-                            thumbnailPosition="left"
-                            onImageLoad={this.handleImageLoad}/>
-                        </Col>
-                        <Col xs={12} md={4}>
+                        
+                        <Col xs={12} md={5}  className="gbGallery">
                             <h3>{this.state.data.name}</h3>
                             <br/>
                             <img src={this.state.data.image} className="imagenCover"  alt=""/>
@@ -189,7 +189,7 @@ class Product extends Component {
                             <br/>
                             <Col xs={12} md={5}>
                                 <br/>
-                                <h4>$ {format(String(this.state.data.price))}.-</h4>
+                                <h4>$ {format(String(this.state.data.priceIva))}.-</h4>
                                 <br/>
                             </Col>
                             <Col xs={12} md={7}>
@@ -222,6 +222,14 @@ class Product extends Component {
                                 <p className="sku">SKU: {this.state.data.sku}</p>
                             </Col>
                             {this.state.alertVisible ? null : <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}><h4>Debes Iniciar session para continuar!</h4></Alert>}
+                        </Col>
+                        <Col xs={12} md={7}>
+                            <ImageGallery
+                                items={this.state.data.gallery}
+                                slideInterval={2000}
+                                thumbnailPosition="right"
+                                onImageLoad={this.handleImageLoad}
+                            />
                         </Col>
                          <Col xs={12} md={12}>
                             <br/>

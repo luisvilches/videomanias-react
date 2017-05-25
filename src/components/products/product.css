@@ -38,3 +38,7 @@
 .hidde{
     display: none;
 }
+
+.Product .image-gallery-slide img{
+    max-width: 100%;
+}

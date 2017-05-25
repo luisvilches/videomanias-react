@@ -14,34 +14,38 @@ class Search extends Component {
             data: [],
             value: '',
             count: '',
+            search:this.props.params.search,
             api:dev
         }
     }
+    up(){
+        window.scrollTo(0, -15);
+    }
      componentWillMount(){
-      fetch(`${this.state.api}/search/${this.props.params.search}`)
-        .then(res => {
-            return res.json()
-        })
-        .then(response => {
-            if(response.status === 'error'){
-                alert(response.message);
-            } 
-            else {
-                if(response.index == 0){
+        console.log(this.state.search)
+        this.up();
+        fetch(`${this.state.api}/product`)
+            .then(res => {
+                return res.json()
+            })
+            .then(response => {
+                var dd = response.data;
+                var filter = dd.filter(item => {return item.name.toString().toLowerCase().includes(this.props.params.search)}) 
+                
+                if(filter.length == 0){
+                    console.log('sin resultados')
                     this.setState({
-                        value: 'Artículo buscado no encontrado, probar con algo más.',
-                        count: response.count
+                        count: filter.length,
+                        value: 'Artículo buscado no encontrado, probar con algo más.'
                     })
                 }else{
                     this.setState({
-                        value: '',
-                        count: response.count,
-                        data: response.data
+                        data: filter,
+                        count: filter.length,
+                        value: ''
                     })
                 }
-            }
-        })
-        console.log(location)
+            })
     }
 
     click(category,product){

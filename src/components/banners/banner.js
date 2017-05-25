@@ -22,8 +22,12 @@ class Banner extends Component{
             api: dev
         }
     }
+    up(){
+        window.scrollTo(0, -15);
+    }
 
     componentWillMount(){
+        this.up();
      fetch(`${this.state.api}/bannersPublicidad`)
         .then(res => {
             return res.json()
@@ -91,10 +95,10 @@ class Banner extends Component{
 
     render(){
         return(
-            <div className="noPadding">
-                <Grid className="Banns" fluid={true}>
+            <div>
+                <Grid className="Banns" fluid={false}>
                     <Row>
-                        <Col xs={12} md={12} className="noPadding">
+                        <Col xs={12} md={12}>
                             <Carousel>
                                 {this.state.banner.map((item,index) => {
                                     return(
@@ -107,7 +111,7 @@ class Banner extends Component{
                         </Col>
                     </Row>
                 </Grid>
-                <Grid className="topCategory">
+                <Grid className="topCategory" fluid={false}>
                     <Row className="noPadding">
                         {this.state.console.map((item,index) => {
                             return(
@@ -120,7 +124,7 @@ class Banner extends Component{
                         })}
                     </Row>
                 </Grid>
-                <Grid className="bannerTabs">
+                <Grid className="bannerTabs" fluid={true}>
                     <Row>
                         <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
                             <Tab eventKey={1} title="Ultimos Estrenos" className="paddingTabs pd100">
@@ -206,7 +210,7 @@ class Item extends Component {
     render(){
         return(
              <Link to={location.hash.substr(2) + '/' + this.props.category + '/' + this.props.url}>
-                <Col xs={12} md={3} className="marginBottom card noPadding">
+                <Col xs={12} md={4} className="marginBottom card noPadding">
                     <Col xs={12} md={12} className="">
                         <img src={this.props.image} className="cover" />
                         <br/>

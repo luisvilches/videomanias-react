@@ -1,7 +1,7 @@
 .Banns{
-    padding-top: 80px !important;
+    padding-top: 120px !important;
     padding-bottom: 0px !important;
-    background: #f8f8f8;
+    background: #fff;
 }
 .Banns .carouselImg {
     width: 100%;
@@ -27,6 +27,7 @@
 }
 .bannerTabs{
     margin-top: 60px;
+    background: #f8f8f8;
 }
 
 .bannerTabs .nav-tabs>li>a {
@@ -57,5 +58,5 @@
 .topCategory img{
     min-height: 200px;
     max-height: 200px;
-    border-radius: 20px;
+    border-radius: 3px;
 }
