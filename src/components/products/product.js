@@ -82,7 +82,7 @@ class Product extends Component {
                 
                 let item = this.state.data.name;
                 let cant = this.refs.cantidad.value;
-                let price = this.state.data.price;
+                let price = this.state.data.priceIva;
                 let sku = this.state.data.sku;
 
                 const formData = new FormData()

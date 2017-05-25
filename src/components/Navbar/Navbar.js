@@ -246,7 +246,7 @@ class App extends Component {
                     <h3>Mi carrito de compras</h3>
                 </Modal.Header>
                 <Modal.Body>
-                   {this.state.login ? <CartLoginActive dirApi={this.state.api} reload={this.users.bind(this)}/> : <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}><h4>Debes Iniciar session para continuar!</h4></Alert>}
+                   {this.state.login ? <CartLoginActive dirApi={this.state.api} reload={this.users.bind(this)} total={this.state.shop}/> : <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}><h4>Debes Iniciar session para continuar!</h4></Alert>}
                 </Modal.Body>
             </Modal>
             <Modal show={this.state.ModalSearch} onHide={this.closeSearch.bind(this)}>
@@ -297,7 +297,7 @@ class App extends Component {
                     <h3>Mi carrito de compras</h3>
                 </Modal.Header>
                 <Modal.Body>
-                   {this.state.login ? <CartLoginActive dirApi={this.state.api} reload={this.users.bind(this)}/> : <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}><h4>Debes Iniciar session para continuar!</h4></Alert>}
+                   {this.state.login ? <CartLoginActive dirApi={this.state.api} reload={this.users.bind(this)} total={this.state.shop}/> : <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}><h4>Debes Iniciar session para continuar!</h4></Alert>}
                 </Modal.Body>
             </Modal>
             <Modal show={this.state.ModalSearch} onHide={this.closeSearch.bind(this)}>
@@ -321,7 +321,8 @@ class CartLoginActive extends Component{
 
         this.state = {
             api: this.props.dirApi,
-            cart: []
+            cart: [],
+            total: this.props.total
         }
     }
 
@@ -382,6 +383,7 @@ class CartLoginActive extends Component{
                         </tbody>
                     </Table>
                     <Col xs={12} md={12} className="conatinerGenerateSale">
+                        <h4>Total: {this.state.total}</h4>
                         <br/>
                         <Button bsStyle="info" className="pull-right">Generar compra</Button>
                     </Col>                    
