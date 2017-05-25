@@ -15,34 +15,6 @@
     padding: 20px;
 }
 
-.visibleOffer{
-    display: block;
-    background:#e74c3c; 
-    padding: 0px;
-}
-
-
-.visibleOffer span{
-    color: #fff;
-    font-weight: bold;
-    margin-left: -2px;
-    text-transform: uppercase;
-    text-align: center !important;
-}
-
-.visiblePremiere{
-    display: block;
-    background:#16a085; 
-    padding: 0px;
-}
-.visiblePremiere span{
-    margin-left: -3px;
-    text-transform: uppercase;
-    color: #fff;
-    font-weight: bold;
-    text-align: center !important;
-}
-
 .hide{
     display: none;
 }

@@ -22,13 +22,13 @@ class BaseComponent extends Component {
     render(){
         return(
             <Grid fluid={true}>
+                <Navbar reloadStatus={this.state.reload}/>
                 <Row>
                     <Col md={12} className="noPadding">
-                        <Navbar reloadStatus={this.state.reload}/>
                         {React.cloneElement(this.props.children, { reload: this.reload.bind(this) })}
-                        <Footer />
                     </Col>
                 </Row>
+                <Footer />
             </Grid>
         )
     }

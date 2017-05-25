@@ -117,7 +117,7 @@
     padding: 20px;
 }
 .card{
-    padding: 20px;
+    padding: 45px;
 }
 
 .price{
@@ -131,33 +131,32 @@
 
 .visibleOffer{
     display: block;
-    background:#e74c3c; 
     padding: 0px;
     text-align: center;
 }
 
 
-.visibleOffer span{
-    color: #fff;
-    font-weight: bold;
-    margin-left: -2px;
-    text-transform: uppercase;
-    text-align: center !important;
+.visibleOffer img{
+    margin:0 auto;
+    display: block;
+    max-width: 30px !important;
+    min-height: 10px !important;
+    margin-bottom: 10px;
 }
 
 .visiblePremiere{
     display: block;
-    background:#16a085; 
     padding: 0px;
-     text-align: center;
+    text-align: center;
 }
-.visiblePremiere span{
-    margin-left: -3px;
-    text-transform: uppercase;
-    color: #fff;
-    font-weight: bold;
-    text-align: center !important;
+.visiblePremiere img{
+    margin:0 auto;
+    display: block;
+    margin-bottom: 10px;
+    max-width: 50px !important;
+    min-height: 10px !important;
 }
+
 
 .hide{
     display: none;

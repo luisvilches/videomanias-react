@@ -207,7 +207,59 @@ class App extends Component {
 
     render() {
         return (
-         <Navbar inverse collapseOnSelect fixedTop={true} fluid={true}>
+         <div>
+             <Navbar inverse collapseOnSelect fixedTop={true} fluid={true}  className="visible-xs visible-sm">
+            <Navbar.Header>
+            <Navbar.Brand>
+                <Link href="#"><img src="/img/logotipo.jpg" className="logo" alt=""/></Link>
+            </Navbar.Brand>
+            <Navbar.Toggle />
+            </Navbar.Header>
+            <Navbar.Collapse>
+            <Nav inline>
+                <NavItem eventKey={1} onClick={this.openUser.bind(this)}><i className="fa fa-user" aria-hidden="true" ></i></NavItem>
+                <NavItem eventKey={2} onClick={this.openSearch.bind(this)}><i className="fa fa-search" aria-hidden="true"></i></NavItem>
+                <NavItem eventKey={3} onClick={this.openCart.bind(this)}><i className="fa fa-shopping-cart" aria-hidden="true"></i> $ {this.state.shop} </NavItem>
+            </Nav>
+            <Nav>
+                {this.state.category.map((item,index) => {
+                    return(
+                        <li key={index} inline>
+                            <Link to={item.name} key={index} className="link">{item.name}</Link>
+                        </li>
+                    )
+                })}
+                
+            </Nav>
+            </Navbar.Collapse>
+            <Modal show={this.state.ModalUser} onHide={this.closeUser.bind(this)}>
+                <Modal.Header closeButton>
+                    <i className="fa fa-times-circle pull-right btnClose" onClick={this.closeUser.bind(this)} aria-hidden="true" ></i>
+                </Modal.Header>
+                <Modal.Body>
+                   {this.state.login ? <Users handler={this.closeSession.bind(this)} reload={this.componentWillMount.bind(this)}/>: <LoginRegister handler={this.afterSession.bind(this)} api={this.state.api}/>}
+                </Modal.Body>
+            </Modal>
+            <Modal show={this.state.ModalCart} onHide={this.closeCart.bind(this)}>
+                <Modal.Header closeButton>
+                    <i className="fa fa-times-circle pull-right btnClose" onClick={this.closeCart.bind(this)} aria-hidden="true" ></i>
+                    <h3>Mi carrito de compras</h3>
+                </Modal.Header>
+                <Modal.Body>
+                   {this.state.login ? <CartLoginActive dirApi={this.state.api} reload={this.users.bind(this)}/> : <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}><h4>Debes Iniciar session para continuar!</h4></Alert>}
+                </Modal.Body>
+            </Modal>
+            <Modal show={this.state.ModalSearch} onHide={this.closeSearch.bind(this)}>
+                <Modal.Header closeButton>
+                    <i className="fa fa-times-circle pull-right btnClose" onClick={this.closeSearch.bind(this)} aria-hidden="true" ></i>
+                    Ingrese las palabras a buscar
+                </Modal.Header>
+                <Modal.Body>
+                   <input ref="buscar" type="search" placeholder="Buscar..." className="form-control" onKeyPress={this._handleKeyPress.bind(this)}/>
+                </Modal.Body>
+            </Modal>
+        </Navbar>
+        <Navbar inverse collapseOnSelect fixedTop={true} fluid={true} className="hidden-xs hidden-sm">
             <Navbar.Header>
             <Navbar.Brand>
                 <Link href="#"><img src="/img/logotipo.jpg" className="logo" alt=""/></Link>
@@ -258,6 +310,7 @@ class App extends Component {
                 </Modal.Body>
             </Modal>
         </Navbar>
+         </div>
         );
     }
 }
@@ -687,11 +740,42 @@ class Users extends Component {
                     <Col xs={12} md={12}>
                         <Tabs defaultActiveKey={1} id="session">
                             <Tab eventKey={1} title="Mi cuenta" className="sessionItem">
-                                <h5>Bienvenido {user.name}</h5>
+                                <h3>Bienvenido <b>{user.username}</b></h3>
                                 <br/>
+                                <br/>
+                                <h4>Mis Datos</h4>
+                                <hr/>
+                                <br/>
+                                <h5>Rut: <b>{user.rut}</b></h5>
+                                <h5>Nombre: <b>{user.name} {user.apellido}</b></h5>
+                                <h5>Telefono: <b>{user.phone}</b></h5>
+                                <h5>Correo electronico: <b>{user.mail}</b></h5>
+                                <br/>
+                                <hr/>
                             </Tab>
                             <Tab eventKey={2} title="Mis compras" className="sessionItem">
-                                
+                                <Table>
+                                    <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Fecha</th>
+                                        <th>Transaccion</th>
+                                        <th>Total</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {user.my_shopping.map((item,index) => {
+                                        return(
+                                        <tr key={index}>
+                                            <th scope="row">{index + 1}</th>
+                                            <td>{item.Date}</td>
+                                            <td>{item.transaction}</td>
+                                            <td>${item.total}</td>
+                                        </tr>
+                                        )
+                                    })}
+                                    </tbody>
+                                </Table>
                             </Tab>
                         </Tabs>
                         <Button onClick={this.props.handler}>Cerrar session</Button>

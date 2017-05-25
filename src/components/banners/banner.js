@@ -40,6 +40,7 @@ class Banner extends Component{
                 this.setState({
                     banner: response.data
                 })
+                console.log(this.state.banner)
             }
         })
 
@@ -103,7 +104,7 @@ class Banner extends Component{
                                 {this.state.banner.map((item,index) => {
                                     return(
                                         <Carousel.Item key={index}>
-                                             <img width={900} height={600} alt="900x500" className="carouselImg" src={item.img}/>
+                                            <Link to={`${this.state.api}/${item.name}`}><img width={900} height={600} alt="900x500" className="carouselImg" src={item.img}/></Link>
                                         </Carousel.Item>
                                     )
                                 })}
@@ -210,18 +211,9 @@ class Item extends Component {
     render(){
         return(
              <Link to={location.hash.substr(2) + '/' + this.props.category + '/' + this.props.url}>
-                <Col xs={12} md={4} className="marginBottom card noPadding">
+                <Col xs={12} md={4} className="marginBottom card">
                     <Col xs={12} md={12} className="">
                         <img src={this.props.image} className="cover" />
-                        <br/>
-                        <Col>
-                            <Col xs={12} md={this.props.premiere ? 6:12}className={this.props.offer ? 'visibleOffer':'hide'}>
-                                <span> Oferta </span>
-                            </Col>
-                            <Col xs={12} md={this.props.offer ? 6:12} className={this.props.premiere ? 'visiblePremiere':'hide'}>
-                                <span> Estreno </span>
-                            </Col>
-                        </Col>
                         <br/>
                         <h4 className="text-center name">{this.props.name}</h4>
                         <h4 className="text-center price">$ {this.props.price}.-</h4>

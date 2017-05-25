@@ -187,6 +187,14 @@ class Product extends Component {
                             <br/>
                             <br/>
                             <br/>
+                            <Col>
+                                <Col xs={12} md={this.state.data.premiere ? 6:12}className={this.state.data.offer ? 'visibleOffer':'hide'}>
+                                    <img src="img/offert.png" className="img-responsive" alt="" title="Producto en oferta"/>
+                                </Col>
+                                <Col xs={12} md={this.state.data.offer ? 6:12} className={this.state.data.premiere ? 'visiblePremiere':'hide'}>
+                                    <img src="img/premiere.png" className="img-responsive" alt="" title="Producto en estreno"/>
+                                </Col>
+                            </Col>
                             <Col xs={12} md={5}>
                                 <br/>
                                 <h4>$ {format(String(this.state.data.priceIva))}.-</h4>
@@ -224,6 +232,8 @@ class Product extends Component {
                             {this.state.alertVisible ? null : <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}><h4>Debes Iniciar session para continuar!</h4></Alert>}
                         </Col>
                         <Col xs={12} md={7}>
+                            <h4 className="text-center">Galeria de imagenes</h4>
+                            <hr/>
                             <ImageGallery
                                 items={this.state.data.gallery}
                                 slideInterval={2000}

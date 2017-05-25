@@ -11,6 +11,10 @@
     position: fixed;
     box-shadow: 0px 0px 10px #999;
 }
+.navbar-inverse .navbar-nav>li>a:focus, .navbar-inverse .navbar-nav>li>a:hover {
+    color: #333;
+    background-color: transparent;
+}
 
 .navbar .navbar-nav li a{
    /* color: #fff;*/
@@ -119,7 +123,7 @@
 }
 
 #session .sessionItem {
-    padding: 80px !important;
+    padding: 70px 20px !important;
 }
 .btnClose{
     color:#333;
@@ -132,4 +136,45 @@
 .conatinerGenerateSale{
     margin-top: 20px;
     border-top: 1px #999 solid;
+}
+
+
+.navbar-inverse .navbar-toggle .icon-bar {
+    background-color: #333;
+}
+
+@media (max-width:768px){
+    .navbar .logo {
+        max-width: 250px;
+        margin-top: -25px;
+        margin-left: -30px;
+    }
+    .navbar {
+        height: 53px;
+    }
+    .navbar-toggle {
+        margin-top: 0px;
+    }
+    .pd100 {
+       padding: 0px !important;
+    }
+    .footer .pd {
+        margin-top: 140px;
+        padding: 0px !important;
+        text-align: center;
+    }
+    .navbar-inverse .navbar-collapse, .navbar-inverse .navbar-form {
+        border-color: #101010;
+        background: #f8f8f8;
+    }
+    .nav>li {
+        display: inline-block;
+    }
+    .navbar-collapse {
+        padding:20px;
+        border-top: 0px solid transparent;
+    }
+    .navbar-inverse .navbar-toggle:focus, .navbar-inverse .navbar-toggle:hover {
+        background-color: transparent;
+    }
 }

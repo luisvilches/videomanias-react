@@ -12,16 +12,16 @@ class Item extends Component {
     render(){
         return(
              <Link to={location.hash.substr(2) + '/' + this.props.url}>
-                <Col xs={12} md={3} className="marginBottom card noPadding">
+                <Col xs={12} md={4} className="marginBottom card">
                     <Col xs={12} md={12} className="">
                         <img src={this.props.image} className="cover" />
                         <br/>
                         <Col>
                             <Col xs={12} md={this.props.premiere ? 6:12}className={this.props.offer ? 'visibleOffer':'hide'}>
-                                <span> Oferta </span>
+                                 <img src="img/offert.png" className="img-responsive" alt="" title="Producto en oferta"/>
                             </Col>
                             <Col xs={12} md={this.props.offer ? 6:12} className={this.props.premiere ? 'visiblePremiere':'hide'}>
-                                <span> Estreno </span>
+                                <img src="img/premiere.png" className="img-responsive" alt="" title="Producto en estreno"/>
                             </Col>
                         </Col>
                         <br/>
@@ -160,9 +160,13 @@ class CategoryShop extends Component {
         window.scrollTo(0, -15);
     }
 
+    componentDidMount(){
+        this.up();
+    }
+
     componentWillMount(){
         this.up();
-     fetch(`${this.state.api}/family`)
+        fetch(`${this.state.api}/family`)
         .then(res => {
             return res.json()
         })
@@ -190,7 +194,7 @@ class CategoryShop extends Component {
     render() {
         return (
             <Grid className="CategoryShop" fluid={true}>
-                <Row className="noPadding">
+                <Row className="">
                     <Col xs={12} md={12}>
                         <Carousel>
                             {this.state.gallery.map((item,index) => {
@@ -203,7 +207,7 @@ class CategoryShop extends Component {
                         </Carousel>
                     </Col>
                 </Row>
-                <Row className="noPadding">
+                <Row className="">
                     <Col xs={12} md={12}>
                         <Tabs defaultActiveKey={1} id="uncontrolled-tab-example">
                             <Tab eventKey={1} title="Todos" className="paddingTabs">
