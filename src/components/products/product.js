@@ -22,7 +22,7 @@ class Product extends Component {
 
         this.state = {
             data: [],
-            api:dev,
+            api:prod,
             usuario:[],
             login: false,
             price: '',

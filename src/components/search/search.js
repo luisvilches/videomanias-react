@@ -15,7 +15,7 @@ class Search extends Component {
             value: '',
             count: '',
             search:this.props.params.search,
-            api:dev
+            api:prod
         }
     }
     up(){

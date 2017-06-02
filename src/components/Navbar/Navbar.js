@@ -20,7 +20,7 @@ class App extends Component {
 
         this.state = {
             category: [],
-            api: dev,
+            api: prod,
             shop: 0,
             ModalUser: false,
             ModalCart: false,

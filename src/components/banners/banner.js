@@ -19,7 +19,7 @@ class Banner extends Component{
             premiere:[],
             offer:[],
             category:[],
-            api: dev
+            api: prod
         }
     }
     up(){

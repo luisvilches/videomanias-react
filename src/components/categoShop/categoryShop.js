@@ -41,7 +41,7 @@ class CategoryShop extends Component {
         super();
 
         this.state = {
-           api: dev,
+           api: prod,
            all:[],
            datos: [],
            subcategory:[],
