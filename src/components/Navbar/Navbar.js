@@ -20,7 +20,7 @@ class App extends Component {
 
         this.state = {
             category: [],
-            api: prod,
+            api: dev,
             shop: 0,
             ModalUser: false,
             ModalCart: false,
@@ -30,12 +30,17 @@ class App extends Component {
             login: true,
             user: [],
             usuario:[],
+            totalWebpay: '',
             reload: this.props.reloadStatus
         }
     }
 
     componentWillReceiveProps(){
-        this.componentWillMount();
+        this.componentWillMount()
+    }
+
+    reloadPadre(){
+        this.props.reload();
     }
 
     //TRAE LAS CATEGORIAS
@@ -60,6 +65,7 @@ class App extends Component {
     //TRAE TODA LA INFORMACION DEL USUARIO
 
     users(){
+        console.log('USUARIO: '+localStorage.getItem('user'))
         fetch(`${this.state.api}/app/user/${localStorage.getItem('user')}`, {
             headers: {
                 'Authorization': `Bearer ${ localStorage.getItem('token')}`, 
@@ -80,8 +86,10 @@ class App extends Component {
             .then(res => res.json())
             .then(result => {
                 this.setState({
-                    shop: result.total
+                    shop: result.total,
+                    totalWebpay: result.totalG
                 })
+               // console.log(result.totalG)
             })
         })
     }
@@ -103,7 +111,8 @@ class App extends Component {
             .then(res => res.json())
             .then(result => {
                 this.setState({
-                    shop: result.total
+                    shop: result.total,
+                    totalWebpay: result.totalG
                 })
                 console.log(result)
             })
@@ -150,7 +159,7 @@ class App extends Component {
     // FUNCION QUE HABRE EL MODAL DE USUARIO
 
     openUser(e) {
-         e.preventDefault()
+         //e.preventDefault()
         if(localStorage.getItem("success") === false || localStorage.getItem("success") === null){
             this.setState({
                 login:false
@@ -232,32 +241,7 @@ class App extends Component {
                 
             </Nav>
             </Navbar.Collapse>
-            <Modal show={this.state.ModalUser} onHide={this.closeUser.bind(this)}>
-                <Modal.Header closeButton>
-                    <i className="fa fa-times-circle pull-right btnClose" onClick={this.closeUser.bind(this)} aria-hidden="true" ></i>
-                </Modal.Header>
-                <Modal.Body>
-                   {this.state.login ? <Users handler={this.closeSession.bind(this)} reload={this.componentWillMount.bind(this)}/>: <LoginRegister handler={this.afterSession.bind(this)} api={this.state.api}/>}
-                </Modal.Body>
-            </Modal>
-            <Modal show={this.state.ModalCart} onHide={this.closeCart.bind(this)}>
-                <Modal.Header closeButton>
-                    <i className="fa fa-times-circle pull-right btnClose" onClick={this.closeCart.bind(this)} aria-hidden="true" ></i>
-                    <h3>Mi carrito de compras</h3>
-                </Modal.Header>
-                <Modal.Body>
-                   {this.state.login ? <CartLoginActive dirApi={this.state.api} reload={this.users.bind(this)} total={this.state.shop}/> : <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}><h4>Debes Iniciar session para continuar!</h4></Alert>}
-                </Modal.Body>
-            </Modal>
-            <Modal show={this.state.ModalSearch} onHide={this.closeSearch.bind(this)}>
-                <Modal.Header closeButton>
-                    <i className="fa fa-times-circle pull-right btnClose" onClick={this.closeSearch.bind(this)} aria-hidden="true" ></i>
-                    Ingrese las palabras a buscar
-                </Modal.Header>
-                <Modal.Body>
-                   <input ref="buscar" type="search" placeholder="Buscar..." className="form-control" onKeyPress={this._handleKeyPress.bind(this)}/>
-                </Modal.Body>
-            </Modal>
+            
         </Navbar>
         <Navbar inverse collapseOnSelect fixedTop={true} fluid={true} className="hidden-xs hidden-sm">
             <Navbar.Header>
@@ -275,31 +259,34 @@ class App extends Component {
                         </li>
                     )
                 })}
-                
             </Nav>
+
             <Nav pullRight>
                 <NavItem eventKey={1} onClick={this.openUser.bind(this)}><i className="fa fa-user" aria-hidden="true" ></i></NavItem>
                 <NavItem eventKey={2} onClick={this.openSearch.bind(this)}><i className="fa fa-search" aria-hidden="true"></i></NavItem>
                 <NavItem eventKey={3} onClick={this.openCart.bind(this)}><i className="fa fa-shopping-cart" aria-hidden="true"></i> $ {this.state.shop} </NavItem>
             </Nav>
             </Navbar.Collapse>
+
             <Modal show={this.state.ModalUser} onHide={this.closeUser.bind(this)}>
                 <Modal.Header closeButton>
                     <i className="fa fa-times-circle pull-right btnClose" onClick={this.closeUser.bind(this)} aria-hidden="true" ></i>
                 </Modal.Header>
                 <Modal.Body>
-                   {this.state.login ? <Users handler={this.closeSession.bind(this)} reload={this.componentWillMount.bind(this)}/>: <LoginRegister handler={this.afterSession.bind(this)} api={this.state.api}/>}
+                   {this.state.login ? <Users handler={this.closeSession.bind(this)} reload={this.componentWillMount.bind(this)}/>: <LoginRegister handler={this.afterSession.bind(this)} api={this.state.api} reload={this.componentWillMount.bind(this)} reloadPadre={this.reloadPadre.bind(this)}/>}
                 </Modal.Body>
             </Modal>
+
             <Modal show={this.state.ModalCart} onHide={this.closeCart.bind(this)}>
                 <Modal.Header closeButton>
                     <i className="fa fa-times-circle pull-right btnClose" onClick={this.closeCart.bind(this)} aria-hidden="true" ></i>
                     <h3>Mi carrito de compras</h3>
                 </Modal.Header>
                 <Modal.Body>
-                   {this.state.login ? <CartLoginActive dirApi={this.state.api} reload={this.users.bind(this)} total={this.state.shop}/> : <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}><h4>Debes Iniciar session para continuar!</h4></Alert>}
+                   {this.state.login ? <CartLoginActive dirApi={this.state.api} reload={this.users.bind(this)} totalWebpay={this.state.totalWebpay} total={this.state.shop}/> : <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}><h4>Debes Iniciar session para continuar!</h4></Alert>}
                 </Modal.Body>
             </Modal>
+
             <Modal show={this.state.ModalSearch} onHide={this.closeSearch.bind(this)}>
                 <Modal.Header closeButton>
                     <i className="fa fa-times-circle pull-right btnClose" onClick={this.closeSearch.bind(this)} aria-hidden="true" ></i>
@@ -309,6 +296,7 @@ class App extends Component {
                    <input ref="buscar" type="search" placeholder="Buscar..." className="form-control" onKeyPress={this._handleKeyPress.bind(this)}/>
                 </Modal.Body>
             </Modal>
+
         </Navbar>
          </div>
         );
@@ -322,7 +310,8 @@ class CartLoginActive extends Component{
         this.state = {
             api: this.props.dirApi,
             cart: [],
-            total: this.props.total
+            total: this.props.total,
+            totalWebpay: this.props.totalWebpay
         }
     }
 
@@ -351,6 +340,24 @@ class CartLoginActive extends Component{
             this.componentWillMount();
             this.props.reload();
         })
+    }
+    generarTransaccion(){
+        if(!this.state.total == 0){
+            var formData = new FormData();
+            formData.append('amount',this.state.totalWebpay)
+            fetch(`${this.state.api}/transaccion`,{
+                method:'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(response => {
+                //alert(response.url);
+                //location()
+                console.log(response.url)
+                console.log(this.props)
+                window.location.href = response.url
+            })
+        }
     }
     render(){
         return(
@@ -385,7 +392,7 @@ class CartLoginActive extends Component{
                     <Col xs={12} md={12} className="conatinerGenerateSale">
                         <h4>Total: {this.state.total}</h4>
                         <br/>
-                        <Button bsStyle="info" className="pull-right">Generar compra</Button>
+                        <Button onClick={this.generarTransaccion.bind(this)} bsStyle="info" className="pull-right">Generar compra</Button>
                     </Col>                    
                 </Row>
             </Grid>
@@ -615,7 +622,8 @@ class LoginRegister extends Component {
                         user: data
                     })
                     this.props.handler();
-                    this.props.reload();
+                    //this.props.reload();
+                    this.props.reloadPadre();
                 }
             })
         }

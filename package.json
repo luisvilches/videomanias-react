@@ -4,7 +4,9 @@
   "private": true,
   "dependencies": {
     "react": "^15.5.4",
+    "react-addons-transition-group": "^15.6.0",
     "react-alert": "^1.0.14",
+    "react-awesome-modal": "^2.0.1",
     "react-bootstrap": "^0.30.10",
     "react-custom-youtube-player": "0.0.1-alpha.3",
     "react-dom": "^15.5.4",
@@ -15,7 +17,8 @@
     "react-social-buttons": "^1.0.8",
     "react-youtube": "^7.4.0",
     "slick-carousel": "^1.6.0",
-    "stateful-react-youtube": "0.0.6"
+    "stateful-react-youtube": "0.0.6",
+    "tg-modal": "^0.7.1"
   },
   "devDependencies": {
     "react-scripts": "0.9.5"

@@ -26,9 +26,15 @@ class Product extends Component {
             usuario:[],
             login: false,
             price: '',
-            alertVisible: false
+            alertVisible: false,
+            reload: this.props.stateReload
         }
     }
+
+   componentWillReceiveProps(){
+        this.validationSession(); 
+        console.log(this.state.reload)
+   }
 
     //TRAE TODA LA INFORMACION DEL USUARIO
 
@@ -182,6 +188,7 @@ class Product extends Component {
                         
                         <Col xs={12} md={5}  className="gbGallery">
                             <h3>{this.state.data.name}</h3>
+                            <p className="">SKU: {this.state.data.sku}</p>
                             <br/>
                             <img src={this.state.data.image} className="imagenCover"  alt=""/>
                             <br/>
@@ -221,15 +228,17 @@ class Product extends Component {
                                             <i className="fa fa-cart-plus"></i>
                                         </Button>
                                     </Col>
-                                    <Col xs={12} md={12}  className={`noPadding ${this.state.alertVisible ? 'visible':'hidde'}`}>
-                                        <p>*todos los precios sin iva incluido</p>
+                                    <br/>
+                                    <br/>
+                                </Row>
+                            </Col>
+                            <Col>
+                                <Row>
+                                    <Col xs={12} md={12}>
+                                         {this.state.alertVisible ? null : <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}><h4>Debes Iniciar session para continuar!</h4></Alert>}
                                     </Col>
                                 </Row>
                             </Col>
-                            <Col xs={12} md={12}>
-                                <p className="sku">SKU: {this.state.data.sku}</p>
-                            </Col>
-                            {this.state.alertVisible ? null : <Alert bsStyle="danger" onDismiss={this.handleAlertDismiss}><h4>Debes Iniciar session para continuar!</h4></Alert>}
                         </Col>
                         <Col xs={12} md={7}>
                             <h4 className="text-center">Galeria de imagenes</h4>
