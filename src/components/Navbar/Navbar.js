@@ -65,7 +65,7 @@ class App extends Component {
     //TRAE TODA LA INFORMACION DEL USUARIO
 
     users(){
-        console.log('USUARIO: '+localStorage.getItem('user'))
+        //console.log('USUARIO: '+localStorage.getItem('user'))
         fetch(`${this.state.api}/app/user/${localStorage.getItem('user')}`, {
             headers: {
                 'Authorization': `Bearer ${ localStorage.getItem('token')}`, 
@@ -231,14 +231,15 @@ class App extends Component {
                 <NavItem eventKey={3} onClick={this.openCart.bind(this)}><i className="fa fa-shopping-cart" aria-hidden="true"></i> $ {this.state.shop} </NavItem>
             </Nav>
             <Nav>
-                {this.state.category.map((item,index) => {
-                    return(
-                        <li key={index} inline>
-                            <Link to={item.name} key={index} className="link">{item.name}</Link>
-                        </li>
-                    )
-                })}
-                
+                <ul>
+                    {this.state.category.map((item,index) => {
+                        return(
+                            <li key={index} inline>
+                                <Link to={item.name} key={index} className="link">{item.name}</Link>
+                            </li>
+                        )
+                    })}
+                </ul>
             </Nav>
             </Navbar.Collapse>
             
@@ -345,6 +346,7 @@ class CartLoginActive extends Component{
         if(!this.state.total == 0){
             var formData = new FormData();
             formData.append('amount',this.state.totalWebpay)
+            formData.append('user',localStorage.getItem('user'))
             fetch(`${this.state.api}/transaccion`,{
                 method:'POST',
                 body: formData
@@ -376,7 +378,7 @@ class CartLoginActive extends Component{
                         <tbody>
                             {this.state.cart.map((item,index) => {
                                 return(
-                                    <tr>
+                                    <tr key={index}>
                                         <td>{item.sku}</td>
                                         <td>{item.item}</td>
                                         <td className="text-center">{item.cant}</td>

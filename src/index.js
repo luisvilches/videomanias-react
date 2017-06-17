@@ -6,6 +6,7 @@ import CategoryShop from './components/categoShop/categoryShop';
 import Banners from './components/banners/banner';
 import Product from './components/products/product';
 import Search from './components/search/search';
+import Comprobante from './components/comprobante/comprobante';
 
 
 import './index.css';
@@ -17,6 +18,7 @@ ReactDOM.render(
       <Route path="/:category" component={ CategoryShop }/>
       <Route path="/:category/:product" component={ Product }/>
       <Route path="/search/content/:search" component={ Search }/>
+      <Route path="/comprobante/cod/:cod" component={ Comprobante }/>
     </Route>
   </Router>,
   document.getElementById('root')

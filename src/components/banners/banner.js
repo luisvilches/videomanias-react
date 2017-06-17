@@ -116,7 +116,7 @@ class Banner extends Component{
                     <Row className="noPadding">
                         {this.state.console.map((item,index) => {
                             return(
-                                <Link to={'/'+ item.category}>
+                                <Link to={'/'+ item.category} key={index}>
                                     <Col xs={12} md={4} className="card">
                                         <img src={item.img} className="img-responsive "/>
                                     </Col>
